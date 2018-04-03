@@ -5,7 +5,13 @@ A Song Mod Tool for Jet Set Radio Future!
 [Download](https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/releases)
 
 # How To Use
-1. Select Your JSRF Sound Folder (Media/Z_ADX/BGM)
-2. Pick the Song to Replace
-3. Click the Button and Select the audio file of the new File
-4. FTP the BGM Folder to your Installed Game on the XBOX and Done!"
+https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/tree/master/Screenshots/Screenshot_1.png
+Open the Tool
+https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/tree/master/Screenshots/Screenshot_2.png
+Select the BGM Folder
+https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/tree/master/Screenshots/Screenshot_3.png
+Select the Part to Replace
+https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/tree/master/Screenshots/Screenshot_4.png
+Pick the File for the Replace
+https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/tree/master/Screenshots/Screenshot_5.png
+Done
