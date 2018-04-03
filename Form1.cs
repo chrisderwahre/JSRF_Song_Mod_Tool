@@ -31,7 +31,7 @@ namespace JSRF_Song_Mod_Tool
                 File.Delete(textBox1.Text + "/" + songName + ".adx"); // Deleting File
                 File.Copy(ofd.FileName, textBox1.Text + "/" + songName + ".adx"); // Copy File
 
-                MessageBox.Show("Successfully replaced the file!", "Replaced Succesfull!");
+                MessageBox.Show("Successfully replaced the file!", "Replaced Successful!");
             }
         }
 
@@ -54,7 +54,7 @@ namespace JSRF_Song_Mod_Tool
         {
             if (listBox1.Text == "") // Checks if a song is selected
             {
-                MessageBox.Show("No Song is Selected please Select a song to Contiune","No Song Selected");
+                MessageBox.Show("No Song is Selected please Select a song to Continue","No Song Selected");
             }
             if (textBox1.Text == "") // Checks if the Game files are selected
             {
