@@ -1,4 +1,4 @@
-﻿namespace JSRF_Song_Mod_Tool
+namespace JSRF_Song_Mod_Tool
 {
     partial class Form1
     {
@@ -70,7 +70,7 @@
             "Baby-T",
             "Birthday Cake",
             "Bokfresh",
-            "Latch Brother Bounce",
+            "Latch Brothers Bounce",
             "Fly Like a Butterfly",
             "The Concept of Love",
             "Funky Dealer",
