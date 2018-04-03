@@ -25,31 +25,33 @@ namespace JSRF_Song_Mod_Tool
 
 
             OpenFileDialog ofd = new OpenFileDialog(); // OpenFileDialog
-            ofd.Filter = "ADX Files | *.adx |WAV Files | *.wav";
+            ofd.Filter = "Supported Sound Files|*.wav;*.adx";
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
 
                 string path = Directory.GetCurrentDirectory();
 
-                if (Path.GetExtension(ofd.FileName) == "wav")
+                if (".wav".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase))
                 {
-                    Process myProcess = new Process();
-
-                    myProcess.StartInfo.FileName = path + "/convert/WAV2ADX.exe "; // the path to the wav2adx file
-                    myProcess.StartInfo.UseShellExecute = false;
-                    myProcess.StartInfo.RedirectStandardOutput = true;
-                    myProcess.StartInfo.RedirectStandardInput = true;
-                    myProcess.StartInfo.Arguments = '"' + ofd.FileName + '"' + " " + '"' + textBox1.Text + "/" + songName + ".adx" + '"'; // Arguments
+                    // the path to the wav2adx file
 
                     File.Delete(textBox1.Text + "/" + songName + ".adx"); // Deleting File
 
-                    myProcess.Start();
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.CreateNoWindow = false;
+                    startInfo.UseShellExecute = false;
+                    startInfo.FileName = path + "/convert/WAV2ADX.EXE";
+                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    startInfo.Arguments = '"' + ofd.FileName + '"' + " " + '"' + textBox1.Text + @"\" + songName + ".adx" + '"';
+
+
+                    Process.Start(startInfo);
 
                     MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!");
                 }
 
-                if (Path.GetExtension(ofd.FileName) == "adx")
+                if (".adx".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase))
                 {
                     File.Delete(textBox1.Text + "/" + songName + ".adx"); // Deleting File
                     File.Copy(ofd.FileName, textBox1.Text + "/" + songName + ".adx"); // Copy File
@@ -180,6 +182,60 @@ namespace JSRF_Song_Mod_Tool
                         break;
                     case "Grace And Glory":
                         songChangingFunc("grace");
+                        break;
+                    case "Set 1a":
+                        songChangingFunc("s_set_01a");
+                        break;
+                    case "Set 1b":
+                        songChangingFunc("s_set_01b");
+                        break;
+                    case "Set 2a":
+                        songChangingFunc("s_set_02a");
+                        break;
+                    case "Set 2b":
+                        songChangingFunc("s_set_02b");
+                        break;
+                    case "Set 3a":
+                        songChangingFunc("s_set_03a");
+                        break;
+                    case "Set 3b":
+                        songChangingFunc("s_set_03b");
+                        break;
+                    case "Set 4a":
+                        songChangingFunc("s_set_04a");
+                        break;
+                    case "Set 4b":
+                        songChangingFunc("s_set_04b");
+                        break;
+                    case "Set 5a":
+                        songChangingFunc("s_set_05a");
+                        break;
+                    case "Set 5b":
+                        songChangingFunc("s_set_05b");
+                        break;
+                    case "Set 6a":
+                        songChangingFunc("s_set_06a");
+                        break;
+                    case "Set 6b":
+                        songChangingFunc("s_set_06b");
+                        break;
+                    case "Set 7a":
+                        songChangingFunc("s_set_07a");
+                        break;
+                    case "Set 7b":
+                        songChangingFunc("s_set_07b");
+                        break;
+                    case "Set 8a":
+                        songChangingFunc("s_set_08a");
+                        break;
+                    case "Set 8b":
+                        songChangingFunc("s_set_08b");
+                        break;
+                    case "Set 9a":
+                        songChangingFunc("s_set_09a");
+                        break;
+                    case "Set 9b":
+                        songChangingFunc("s_set_09b");
                         break;
                 }
             }
