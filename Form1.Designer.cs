@@ -94,7 +94,25 @@ namespace JSRF_Song_Mod_Tool
             "Like It Like This Like That",
             "Sweet Soul Brother (B.B. Rights Mix)",
             "That\'s Enough (B.B. Rights Mix)",
-            "Grace And Glory"});
+            "Grace And Glory",
+            "Set 1a",
+            "Set 1b",
+            "Set 2a",
+            "Set 2b",
+            "Set 3a",
+            "Set 3b",
+            "Set 4a",
+            "Set 4b",
+            "Set 5a",
+            "Set 5b",
+            "Set 6a",
+            "Set 6b",
+            "Set 7a",
+            "Set 7b",
+            "Set 8a",
+            "Set 8b",
+            "Set 9a",
+            "Set 9b"});
             this.listBox1.Location = new System.Drawing.Point(17, 108);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(327, 264);
@@ -123,7 +141,7 @@ namespace JSRF_Song_Mod_Tool
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(18, 50);
+            this.label3.Location = new System.Drawing.Point(14, 50);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(95, 13);
             this.label3.TabIndex = 5;
@@ -131,9 +149,9 @@ namespace JSRF_Song_Mod_Tool
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(119, 46);
+            this.textBox1.Location = new System.Drawing.Point(115, 46);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(192, 20);
+            this.textBox1.Size = new System.Drawing.Size(196, 20);
             this.textBox1.TabIndex = 6;
             // 
             // button3
@@ -159,7 +177,7 @@ namespace JSRF_Song_Mod_Tool
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(17, 89);
+            this.label4.Location = new System.Drawing.Point(12, 92);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(59, 13);
             this.label4.TabIndex = 9;
