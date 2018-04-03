@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -24,14 +25,37 @@ namespace JSRF_Song_Mod_Tool
 
 
             OpenFileDialog ofd = new OpenFileDialog(); // OpenFileDialog
-            ofd.Filter = "ADX Files | *.adx";
+            ofd.Filter = "ADX Files | *.adx |WAV Files | *.wav";
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                File.Delete(textBox1.Text + "/" + songName + ".adx"); // Deleting File
-                File.Copy(ofd.FileName, textBox1.Text + "/" + songName + ".adx"); // Copy File
 
-                MessageBox.Show("Successfully replaced the file!", "Replaced Successful!");
+                string path = Directory.GetCurrentDirectory();
+
+                if (Path.GetExtension(ofd.FileName) == "wav")
+                {
+                    Process myProcess = new Process();
+
+                    myProcess.StartInfo.FileName = path + "/convert/WAV2ADX.exe "; // the path to the wav2adx file
+                    myProcess.StartInfo.UseShellExecute = false;
+                    myProcess.StartInfo.RedirectStandardOutput = true;
+                    myProcess.StartInfo.RedirectStandardInput = true;
+                    myProcess.StartInfo.Arguments = '"' + ofd.FileName + '"' + " " + '"' + textBox1.Text + "/" + songName + ".adx" + '"'; // Arguments
+
+                    File.Delete(textBox1.Text + "/" + songName + ".adx"); // Deleting File
+
+                    myProcess.Start();
+
+                    MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!");
+                }
+
+                if (Path.GetExtension(ofd.FileName) == "adx")
+                {
+                    File.Delete(textBox1.Text + "/" + songName + ".adx"); // Deleting File
+                    File.Copy(ofd.FileName, textBox1.Text + "/" + songName + ".adx"); // Copy File
+
+                    MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!");
+                }
             }
         }
 
@@ -54,163 +78,109 @@ namespace JSRF_Song_Mod_Tool
         {
             if (listBox1.Text == "") // Checks if a song is selected
             {
-                MessageBox.Show("No Song is Selected please Select a song to Continue","No Song Selected");
+                MessageBox.Show("No Song is Selected please Select a song to Continue", "No Song Selected");
             }
             if (textBox1.Text == "") // Checks if the Game files are selected
             {
                 MessageBox.Show("No Sound Media Files Selected!", "No Sound Files!");
             }
 
-            if (listBox1.Text != "" || textBox1.Text != "")         // Checks if the text and list Box are'nt Empty
+            if (listBox1.Text != "" || textBox1.Text != "")         // Checks if the text and list Box aren't Empty
             {
-                if (listBox1.Text == "Aisle 10")
-                {
-                     songChangingFunc("aisle10");
-                }
 
-                if (listBox1.Text == "The Answer")
+                string txt = listBox1.Text;
+                switch (txt)
                 {
-                    songChangingFunc("answer");
-                }
-
-                if (listBox1.Text == "Baby-T")
-                {
-                    songChangingFunc("baby_t");
-                }
-
-                if (listBox1.Text == "Birthday Cake")
-                {
-                    songChangingFunc("birthday");
-                }
-
-                if (listBox1.Text == "Bokfresh")
-                {
-                    songChangingFunc("bokfresh");
-                }
-
-                if (listBox1.Text == "Latch Brother Bounce")
-                {
-                    songChangingFunc("bounce");
-                }
-
-                if (listBox1.Text == "Fly Like a Butterfly")
-                {
-                    songChangingFunc("buttrfly");
-                }
-
-                if (listBox1.Text == "The Concept of Love")
-                {
-                    songChangingFunc("concept");
-                }
-
-                if (listBox1.Text == "Funky Dealer")
-                {
-                    songChangingFunc("dealer");
-                }
-
-                if (listBox1.Text == "Shape Da Future")
-                {
-                    songChangingFunc("future");
-                }
-
-                if (listBox1.Text == "Statement of Intent")
-                {
-                    songChangingFunc("intent");
-                }
-
-                if (listBox1.Text == "Koto Stomp")
-                {
-                    songChangingFunc("koto");
-                }
-
-                if (listBox1.Text == "Count Latchula")
-                {
-                    songChangingFunc("latchula");
-                }
-
-                if (listBox1.Text == "Let Mom Sleep (No Sleep Remix)")
-                {
-                    songChangingFunc("letmom");
-                }
-
-                if (listBox1.Text == "I Love Love You")
-                {
-                    songChangingFunc("lovelove");
-                }
-
-                if (listBox1.Text == "Rockin' da Mic (The Latch Bros Remix)")
-                {
-                    songChangingFunc("mic");
-                }
-
-                if (listBox1.Text == "I'm Not a Model")
-                {
-                    songChangingFunc("model");
-                }
-
-                if (listBox1.Text == "Oldies But Happies")
-                {
-                    songChangingFunc("oldies");
-                }
-
-                if (listBox1.Text == "Me Likey the Poom Poom")
-                {
-                    songChangingFunc("poompoom");
-                }
-
-                if (listBox1.Text == "Rock it On (D.S. Mix)")
-                {
-                    songChangingFunc("rockiton");
-                }
-
-                if (listBox1.Text == "Humming the Bassline (D.S. Remix)")
-                {
-                    songChangingFunc("g_park");
-                }
-
-                if (listBox1.Text == "The Scrappy (The Latch Bros Remix)")
-                {
-                    songChangingFunc("scrappy");
-                }
-
-                if (listBox1.Text == "Sneakman (Toronto Mix)")
-                {
-                    songChangingFunc("sneakman");
-                }
-
-                if (listBox1.Text == "Ill Victory Beat")
-                {
-                    songChangingFunc("victory");
-                }
-
-                if (listBox1.Text == "What About The Future")
-                {
-                    songChangingFunc("whatbout");
-                }
-
-                if (listBox1.Text == "Teknopathetic")
-                {
-                    songChangingFunc("pathetic");
-                }
-
-                if (listBox1.Text == "Like It Like This Like That")
-                {
-                    songChangingFunc("likeit");
-                }
-
-                if (listBox1.Text == "Sweet Soul Brother (B.B. Rights Mix)")
-                {
-                    songChangingFunc("sweet");
-                }
-
-                if (listBox1.Text == "That's Enough (B.B. Rights Mix)")
-                {
-                    songChangingFunc("thats");
-                }
-
-                if (listBox1.Text == "Grace And Glory")
-                {
-                    songChangingFunc("grace");
+                    case "Aisle 10":
+                        songChangingFunc("aisle10");
+                        break;
+                    case "The Answer":
+                        songChangingFunc("answer");
+                        break;
+                    case "Baby-T":
+                        songChangingFunc("baby_t");
+                        break;
+                    case "Birthday Cake":
+                        songChangingFunc("birthday");
+                        break;
+                    case "Bokfresh":
+                        songChangingFunc("bokfresh");
+                        break;
+                    case "Latch Brothers Bounce":
+                        songChangingFunc("bounce");
+                        break;
+                    case "Fly Like a Butterfly":
+                        songChangingFunc("buttrfly");
+                        break;
+                    case "The Concept of Love":
+                        songChangingFunc("concept");
+                        break;
+                    case "Funky Dealer":
+                        songChangingFunc("dealer");
+                        break;
+                    case "Shape Da Future":
+                        songChangingFunc("future");
+                        break;
+                    case "Statement of Intent":
+                        songChangingFunc("intent");
+                        break;
+                    case "Koto Stomp":
+                        songChangingFunc("koto");
+                        break;
+                    case "Count Latchula":
+                        songChangingFunc("latchula");
+                        break;
+                    case "Let Mom Sleep (No Sleep Remix)":
+                        songChangingFunc("letmom");
+                        break;
+                    case "I Love Love You":
+                        songChangingFunc("lovelove");
+                        break;
+                    case "Rockin' da Mic (The Latch Bros Remix)":
+                        songChangingFunc("mic");
+                        break;
+                    case "I'm Not a Model":
+                        songChangingFunc("model");
+                        break;
+                    case "Oldies But Happies":
+                        songChangingFunc("oldies");
+                        break;
+                    case "Me Likey the Poom Poom":
+                        songChangingFunc("poompoom");
+                        break;
+                    case "Rock it On (D.S. Mix)":
+                        songChangingFunc("rockiton");
+                        break;
+                    case "Humming the Bassline (D.S. Remix)":
+                        songChangingFunc("g_park");
+                        break;
+                    case "The Scrappy (The Latch Bros Remix)":
+                        songChangingFunc("scrappy");
+                        break;
+                    case "Sneakman (Toronto Mix)":
+                        songChangingFunc("sneakman");
+                        break;
+                    case "Ill Victory Beat":
+                        songChangingFunc("victory");
+                        break;
+                    case "What About The Future":
+                        songChangingFunc("whatabout");
+                        break;
+                    case "Teknopathetic":
+                        songChangingFunc("scrappy");
+                        break;
+                    case "Like It Like This Like That":
+                        songChangingFunc("likeit");
+                        break;
+                    case "Sweet Soul Brother (B.B. Rights Mix)":
+                        songChangingFunc("sweet");
+                        break;
+                    case "That's Enough (B.B. Rights Mix)":
+                        songChangingFunc("thats");
+                        break;
+                    case "Grace And Glory":
+                        songChangingFunc("grace");
+                        break;
                 }
             }
         }
