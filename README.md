@@ -6,3 +6,11 @@ A Song Mod Tool for Jet Set Radio Future!
 
 # How To Use
 TUTORIAL FOR NEW VERSION WILL FOLLOW SOON
+
+# Credit
+
+FtpClient Class: https://gist.github.com/eternnoir/9777420 
+
+Thanks to contributing to:
+ - neodos (Helped me with that ftp stuff)
+ - BURRR (Helped me with the set files)
