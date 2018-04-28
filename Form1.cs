@@ -11,6 +11,8 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace JSRF_Song_Mod_Tool
 {
@@ -22,8 +24,27 @@ namespace JSRF_Song_Mod_Tool
         {      
 
             FtpClient ftpClient = new FtpClient("ftp://" + XBoxIP.Text + ":" + XBoxPort.Text, XBoxUser.Text, XBoxPassword.Text); // Connects to the selected ip address with the selected port and the selected user and password
-            ftpClient.delete(XBoxJSRFGamePath.Text + "/" + songname + ".adx"); // Deletes the old file so the new one can be ftp'd
-            ftpClient.upload(XBoxJSRFGamePath.Text + "/" + songname + ".adx", textBox1.Text.Replace(@"\", "/") + "/" + songname + ".adx"); // Uploads the new file
+
+            string[] files = Directory.GetFiles("ftp://" + XBoxIP.Text + ":" + XBoxPort.Text + "/C/", "*.*", SearchOption.AllDirectories);
+
+            int filesOnC = 0;
+
+            foreach (string s in files)
+            {
+                filesOnC++;
+            } 
+
+            if (filesOnC > 0)
+            {
+                ftpClient.delete(XBoxJSRFGamePath.Text + "/" + songname + ".adx"); // Deletes the old file so the new one can be ftp'd
+                ftpClient.upload(XBoxJSRFGamePath.Text + "/" + songname + ".adx", textBox1.Text.Replace(@"\", "/") + "/" + songname + ".adx"); // Uploads the new file
+            } else {
+                MessageBox.Show("No FTP Server found, error: no files on the C partion OR no FTP Server found if you are sure the server is contanct please open an issue on github.com/chrisderwahre/JSRF_Song_Mod_Tool, thanks", "Expermintal Error");
+            }
+
+
+            //ftpClient.delete(XBoxJSRFGamePath.Text + "/" + songname + ".adx"); // Deletes the old file so the new one can be ftp'd
+            //ftpClient.upload(XBoxJSRFGamePath.Text + "/" + songname + ".adx", textBox1.Text.Replace(@"\", "/") + "/" + songname + ".adx"); // Uploads the new file
         }
 
         public void songChangingFunc(string songName) // Song Changing Function
@@ -35,15 +56,15 @@ namespace JSRF_Song_Mod_Tool
             }
 
 
-            OpenFileDialog ofd = new OpenFileDialog(); // OpenFileDialog
-            ofd.Filter = "Supported Sound Files|*.wav;*.adx";
+            OpenFileDialog ofd = new OpenFileDialog(); // Creates a new OpenFileDialog
+            ofd.Filter = "Supported Sound Files|*.wav;*.adx"; // Sets a filter for the files to selected
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
 
                 string path = Directory.GetCurrentDirectory(); // Gets the current direcory
 
-                if (".wav".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase))
+                if (".wav".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase)) // Checks if the selected file is a wav file
                 {
                     // the path to the wav2adx file
 
@@ -267,10 +288,13 @@ namespace JSRF_Song_Mod_Tool
 
             // ** NOTE TO MYSELF ADD A CONFIG.XML AUTOLOADER TO MAKE DEBUGGING WAY EASIER ** //
 
+            
+           // Basic Config if not Config file has been found
             XBoxPassword.Text = "xbox"; // Sets standart settings for the XBox Password textbox
             XBoxPort.Text = "21"; // Sets standart settings for the XBox IP textbox
             XBoxUser.Text = "xbox"; // Sets standart settings for the XBox User textbox
             XBoxJSRFGamePath.Text = "/E/Games/Jet Set Radio Future/Media/Z_ADX/BGM"; // Sets standart settings for the XBox JSRF Path textbox
+            
         } 
 
         private void whatarethesetfiles_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -290,9 +314,9 @@ namespace JSRF_Song_Mod_Tool
                     string txt = listBox1.Text;
                     switch (txt) // Switchs the name and makes it easier and don't take much Lines
                     {
-                        case "Aisle 10":
-                            ftpSelectedFileToXbox("aisle10");
-                            break;
+                        case "Aisle 10": // If Aisle 10 is selected
+                            ftpSelectedFileToXbox("aisle10"); // use the ftpSelectedFileToXbox function with aisle10 (the adx file name)
+                            break; // breaks so nothing else will be made
                         case "The Answer":
                             ftpSelectedFileToXbox("answer");
                             break;
