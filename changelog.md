@@ -8,7 +8,7 @@ Added FTP Support for ftp'ing the changed file directly to the xbox.
 
 Fixed Set files because 2 set files have differnet names and i didn't saw it.
 
-# 1.0.3#
+# 1.0.3
 
 Added wav file support.
 
