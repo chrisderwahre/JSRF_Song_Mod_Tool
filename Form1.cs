@@ -21,16 +21,16 @@ namespace JSRF_Song_Mod_Tool
         public void ftpSelectedFileToXbox(string songname)
         {      
 
-            FtpClient ftpClient = new FtpClient("ftp://" + XBoxIP.Text + ":" + XBoxPort.Text, XBoxUser.Text, XBoxPassword.Text);
-            ftpClient.delete(XBoxJSRFGamePath.Text + "/" + songname + ".adx");
-            ftpClient.upload(XBoxJSRFGamePath.Text + "/" + songname + ".adx", textBox1.Text.Replace(@"\", "/") + "/" + songname + ".adx");
+            FtpClient ftpClient = new FtpClient("ftp://" + XBoxIP.Text + ":" + XBoxPort.Text, XBoxUser.Text, XBoxPassword.Text); // Connects to the selected ip address with the selected port and the selected user and password
+            ftpClient.delete(XBoxJSRFGamePath.Text + "/" + songname + ".adx"); // Deletes the old file so the new one can be ftp'd
+            ftpClient.upload(XBoxJSRFGamePath.Text + "/" + songname + ".adx", textBox1.Text.Replace(@"\", "/") + "/" + songname + ".adx"); // Uploads the new file
         }
 
         public void songChangingFunc(string songName) // Song Changing Function
         {
             if (!File.Exists(textBox1.Text + "/" + songName + ".adx")) // Checks if the Folder is Correct
             {
-                MessageBox.Show("Wrong Sound Media Folder: Couldn't find Original File to Replace", "Wrong Sound Media Folder");
+                MessageBox.Show("Wrong Sound Media Folder: Couldn't find Original File to Replace", "Wrong Sound Media Folder"); // Outout
                 return;
             }
 
@@ -41,7 +41,7 @@ namespace JSRF_Song_Mod_Tool
             if (ofd.ShowDialog() == DialogResult.OK)
             {
 
-                string path = Directory.GetCurrentDirectory();
+                string path = Directory.GetCurrentDirectory(); // Gets the current direcory
 
                 if (".wav".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase))
                 {
@@ -49,48 +49,44 @@ namespace JSRF_Song_Mod_Tool
 
                     File.Delete(textBox1.Text + "/" + songName + ".adx"); // Deleting File
 
-                    ProcessStartInfo startInfo = new ProcessStartInfo();
-                    startInfo.CreateNoWindow = false;
-                    startInfo.UseShellExecute = false;
-                    startInfo.FileName = path + "/convert/WAV2ADX.EXE";
-                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    startInfo.Arguments = '"' + ofd.FileName + '"' + " " + '"' + textBox1.Text + @"\" + songName + ".adx" + '"';
+                    ProcessStartInfo startInfo = new ProcessStartInfo(); // Other shit
+                    startInfo.CreateNoWindow = false; // Other shit
+                    startInfo.UseShellExecute = false; // Other shit
+                    startInfo.FileName = path + "/convert/WAV2ADX.EXE";  // Filename for the .exe file
+                    startInfo.WindowStyle = ProcessWindowStyle.Hidden; // Not showning the cmd 
+                    startInfo.Arguments = '"' + ofd.FileName + '"' + " " + '"' + textBox1.Text + @"\" + songName + ".adx" + '"'; // Argument for converting Wav files to adx!
 
 
-                    Process.Start(startInfo);
+                    Process.Start(startInfo); // Starts the process with the settings from above
 
-                    MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!");
+                    MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!"); // Output
                 }
 
-                if (".adx".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase))
+                if (".adx".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase)) // Checks if a adx file is selected
                 {
                     File.Delete(textBox1.Text + "/" + songName + ".adx"); // Deleting File
                     File.Copy(ofd.FileName, textBox1.Text + "/" + songName + ".adx"); // Copy File
 
-                    MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!");
+                    MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!"); // Output
                 }
             }
         }
 
         public Form1()
         {
-            InitializeComponent();
+            InitializeComponent(); // The standard C# shit.
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            String version = "1.0.4";
-            String mode = "Release";
-            MessageBox.Show("Version: " + version + "  " + mode + "\n\nJSRF Song Mod Tool by ChrisderWahre 2018\n\nContributors:\n -neodos (Helped me with FTP stuff)\n -BURRRR (Helped me with the set files)", "JSRF Song Mod Tool"); // About Button
+            String version = "1.0.4"; // version string
+            String mode = "Debug"; // mode string
+            MessageBox.Show("Version: " + version + "  " + mode + "\n\nJSRF Song Mod Tool by ChrisderWahre 2018\n\nContributors:\n -neodos (Helped me with FTP stuff)\n -BURRRR (Helped me with the set files)", "JSRF Song Mod Tool"); // About Button with info about what version is running
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            String set1a = "Set 1a: Funky Dealer, I Love love you, Let Mom Sleep (No Sleep Remix), Fly Like a Butterfly, What about the future, Sneakman(Toronto Remix)\n\n";
-            String set1b = "Set 1b: Fly like a Butterfly, What about the future, Sneakman (Toronto Remix), Funky Dealer, I Love love you, Let mom sleep (No Sleep Remix)\n\n";
-            String set2a = "Set 2a: Statement of Intent, UNKNOWN, Aisle 10, Rockin da Mic, Oldies but Happies, Birthday Cake, Like this like that, Sweet Soul Broter(Remix)\n\n";
-            String set2b = "Set 2b: Oldies but Happies, Birthday Cake, Like this like that, Sweet Soul Brother, Statement of Intent, UNKNOWN, Aisle 10, Rockin da Mic\n\n";
-            String set3a = "Set 3a: Sneakman, Teknopathetic, Like this like that, Let Mom Sleep (No Sleep Remix), Baby-t";
+            //** Removed these these Strings because they are unused. **//
             MessageBox.Show("How to use:\n1. Select Your JSRF Sound Folder (Media/Z_ADX/BGM)\n2. Pick the Song to Replace\n3.Click the Button and Select the audio file of the new File\n4. FTP the BGM Folder to your Installed Game on the XBOX and Done!", "Help"); // Tutorial Button
         }
 
@@ -98,35 +94,20 @@ namespace JSRF_Song_Mod_Tool
         {
             if (listBox1.Text == "") // Checks if a song is selected
             {
-                MessageBox.Show("No Song is Selected please Select a song to Continue", "No Song Selected");
+                MessageBox.Show("No Song is Selected please Select a song to Continue", "No Song Selected"); // Outpot
             }
             if (textBox1.Text == "") // Checks if the Game files are selected
             {
-                MessageBox.Show("No Sound Media Files Selected!", "No Sound Files!");
+                MessageBox.Show("No Sound Media Files Selected!", "No Sound Files!"); // Output
             }
 
-            // Set 1a Funky Dealer - I Love love you - Let Mom Sleep - Fly Like a Butter Fly - What about the future - Sneakman
-            // Set 1b Fly like a butterfly - What about the future - Sneakman - Funky Dealer - I love love you - Let mom sleep
-            // Set 2a Statement of Intent - UNKNOWN - Aisle 10 - Rockin da mic - Oldies but Happies - Birthday Cake - Like this like that - sweet soul brother
-            // Set 2b Oldies but Happies - Birthday Cake
-            // Set 3a
-            // Set 3b
-            // Set 4
-            // Set 5a
-            // Set 5b
-            // Set 6
-            // Set 7a
-            // Set 7b
-            // Set 8a
-            // Set 8b
-            // Set 9a
-            // Set 9b
+            // ** Removed these Comments ** //
 
             if (listBox1.Text != "" || textBox1.Text != "")         // Checks if the text and list Box aren't Empty
             {
 
                 string txt = listBox1.Text;
-                switch (txt)
+                switch (txt) // Switched the songs and makes it easier to use the function and saves lines of code.
                 {
                     case "Aisle 10":
                         songChangingFunc("aisle10");
@@ -281,31 +262,33 @@ namespace JSRF_Song_Mod_Tool
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            tabPage1.Text = @"Tool";
-            tabPage2.Text = @"Settings";
+            tabPage1.Text = @"Tool"; // Sets the Tab page names
+            tabPage2.Text = @"Settings"; // Sets the Tab page names
 
-            XBoxPassword.Text = "xbox";
-            XBoxPort.Text = "21";
-            XBoxUser.Text = "xbox";
-            XBoxJSRFGamePath.Text = "/E/Games/Jet Set Radio Future/Media/Z_ADX/BGM";
-        }
+            // ** NOTE TO MYSELF ADD A CONFIG.XML AUTOLOADER TO MAKE DEBUGGING WAY EASIER ** //
+
+            XBoxPassword.Text = "xbox"; // Sets standart settings for the XBox Password textbox
+            XBoxPort.Text = "21"; // Sets standart settings for the XBox IP textbox
+            XBoxUser.Text = "xbox"; // Sets standart settings for the XBox User textbox
+            XBoxJSRFGamePath.Text = "/E/Games/Jet Set Radio Future/Media/Z_ADX/BGM"; // Sets standart settings for the XBox JSRF Path textbox
+        } 
 
         private void whatarethesetfiles_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://pastebin.com/raw/spiE5xup");
+            Process.Start("https://pastebin.com/raw/spiE5xup"); // Opens a link in Browser for the set file information
         }
 
         private void label5_Click(object sender, EventArgs e)
         {
-
+            // Nothing here, this was a mistake, please remove the function.
         }
 
         private void ftptoxbox_btn_Click(object sender, EventArgs e)
         {
-                if (XBoxIP.Text != "" && XBoxJSRFGamePath.Text != "" && XBoxPassword.Text != "" && XBoxPort.Text != "" && XBoxUser.Text != "" && textBox1.Text != "")
+                if (XBoxIP.Text != "" && XBoxJSRFGamePath.Text != "" && XBoxPassword.Text != "" && XBoxPort.Text != "" && XBoxUser.Text != "" && textBox1.Text != "") // Checks if everythings existing
                 {
                     string txt = listBox1.Text;
-                    switch (txt)
+                    switch (txt) // Switchs the name and makes it easier and don't take much Lines
                     {
                         case "Aisle 10":
                             ftpSelectedFileToXbox("aisle10");
@@ -447,7 +430,7 @@ namespace JSRF_Song_Mod_Tool
                             break;
                     }
                 } else {
-                    MessageBox.Show("XBox FTP Settings NOT correct and/or no Song Selected", "Error");
+                    MessageBox.Show("XBox FTP Settings NOT correct and/or no Song Selected", "Error"); // Error reporting.
                 }
             }
         }
