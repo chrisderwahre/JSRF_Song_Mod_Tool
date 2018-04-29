@@ -22,30 +22,13 @@ namespace JSRF_Song_Mod_Tool
 
         public void ftpSelectedFileToXbox(string songname)
         {      
-
             FtpClient ftpClient = new FtpClient("ftp://" + XBoxIP.Text + ":" + XBoxPort.Text, XBoxUser.Text, XBoxPassword.Text); // Connects to the selected ip address with the selected port and the selected user and password
-
-            string[] files = Directory.GetFiles("ftp://" + XBoxIP.Text + ":" + XBoxPort.Text + "/C/", "*.*", SearchOption.AllDirectories);
-
-            int filesOnC = 0;
-
-            foreach (string s in files)
-            {
-                filesOnC++;
-            } 
-
-            if (filesOnC > 0)
-            {
-                ftpClient.delete(XBoxJSRFGamePath.Text + "/" + songname + ".adx"); // Deletes the old file so the new one can be ftp'd
-                ftpClient.upload(XBoxJSRFGamePath.Text + "/" + songname + ".adx", textBox1.Text.Replace(@"\", "/") + "/" + songname + ".adx"); // Uploads the new file
-            } else {
-                MessageBox.Show("No FTP Server found, error: no files on the C partion OR no FTP Server found if you are sure the server is contanct please open an issue on github.com/chrisderwahre/JSRF_Song_Mod_Tool, thanks", "Expermintal Error");
-            }
-
+            ftpClient.delete(XBoxJSRFGamePath.Text + "/" + songname + ".adx"); // Deletes the old file so the new one can be ftp'd
+            ftpClient.upload(XBoxJSRFGamePath.Text + "/" + songname + ".adx", textBox1.Text.Replace(@"\", "/") + "/" + songname + ".adx"); // Uploads the new file
+        }
 
             //ftpClient.delete(XBoxJSRFGamePath.Text + "/" + songname + ".adx"); // Deletes the old file so the new one can be ftp'd
             //ftpClient.upload(XBoxJSRFGamePath.Text + "/" + songname + ".adx", textBox1.Text.Replace(@"\", "/") + "/" + songname + ".adx"); // Uploads the new file
-        }
 
         public void songChangingFunc(string songName) // Song Changing Function
         {
@@ -108,7 +91,7 @@ namespace JSRF_Song_Mod_Tool
         private void button4_Click(object sender, EventArgs e)
         {
             //** Removed these these Strings because they are unused. **//
-            MessageBox.Show("How to use:\n1. Select Your JSRF Sound Folder (Media/Z_ADX/BGM)\n2. Pick the Song to Replace\n3.Click the Button and Select the audio file of the new File\n4. FTP the BGM Folder to your Installed Game on the XBOX and Done!", "Help"); // Tutorial Button
+            MessageBox.Show("How to use:\n1. Select Your JSRF Sound Folder (Media/Z_ADX/BGM)\n2. Pick the Song to Replace\n3.Click the Button and Select the audio file of the new File\n4. Click the FTP to XBOX Button to ftp the selected to the XBox!", "Help"); // Tutorial Button
         }
 
         private void button2_Click(object sender, EventArgs e)
