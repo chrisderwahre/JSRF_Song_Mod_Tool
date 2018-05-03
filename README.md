@@ -2,10 +2,12 @@
 A Song Mod Tool for Jet Set Radio Future! 
 
 # Download
-[Download](https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/releases)
+[Download the latest release](https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/releases)
+
+[View the Set File Info !!! NOT DONE YET !!!](https://pastebin.com/raw/spiE5xup)
 
 # How To Use
-TUTORIAL FOR NEW VERSION WILL FOLLOW SOON
+!!! TUTORIAL FOR NEW VERSION WILL FOLLOW SOON !!!
 
 # Credit
 
