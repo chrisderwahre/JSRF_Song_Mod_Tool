@@ -282,7 +282,14 @@ namespace JSRF_Song_Mod_Tool
 
         private void whatarethesetfiles_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://pastebin.com/raw/spiE5xup"); // Opens a link in Browser for the set file information
+            if (File.Exists("Set File Info.txt") || File.Exists("set file info.txt") || File.Exists("set_file_info.txt")) // Checks if a local copy of the text file exist
+            {
+                string path = Directory.GetCurrentDirectory();
+                Process.Start(path + "/Set file info.txt");
+                Process.Start(path + "/set_file_info.txt");
+            } else {
+                Process.Start("https://pastebin.com/raw/spiE5xup"); // Opens a link in Browser for the set file information
+            }
         }
 
         private void label5_Click(object sender, EventArgs e)
