@@ -27,9 +27,6 @@ namespace JSRF_Song_Mod_Tool
             ftpClient.upload(XBoxJSRFGamePath.Text + "/" + songname + ".adx", textBox1.Text.Replace(@"\", "/") + "/" + songname + ".adx"); // Uploads the new file
         }
 
-            //ftpClient.delete(XBoxJSRFGamePath.Text + "/" + songname + ".adx"); // Deletes the old file so the new one can be ftp'd
-            //ftpClient.upload(XBoxJSRFGamePath.Text + "/" + songname + ".adx", textBox1.Text.Replace(@"\", "/") + "/" + songname + ".adx"); // Uploads the new file
-
         public void songChangingFunc(string songName) // Song Changing Function
         {
             if (!File.Exists(textBox1.Text + "/" + songName + ".adx")) // Checks if the Folder is Correct
@@ -203,6 +200,19 @@ namespace JSRF_Song_Mod_Tool
                     case "Grace And Glory":
                         songChangingFunc("grace");
                         break;
+                    // Failed (Over) Cleared Title Song(Concept of Love) DJ Demo(Ill Victory Beat)
+                    case "Failed (Over)":
+                        songChangingFunc("g_over");
+                        break;
+                    case "Cleared":
+                        songChangingFunc("clear");
+                        break;
+                    case "Title Song(Concept of Love":
+                        songChangingFunc("title");
+                        break;
+                    case "DJ Demo(Ill Victory Beat)":
+                        songChangingFunc("dj_demo1");
+                        break;
                     case "Set 1a":
                         songChangingFunc("s_set_01a");
                         break;
@@ -250,6 +260,15 @@ namespace JSRF_Song_Mod_Tool
                         break;
                     case "Set 9b":
                         songChangingFunc("s_set_09b");
+                        break;
+                    case "Ending (Sweet Sould Brother (Toronto Remix))":
+                        songChangingFunc("ending");
+                        break;
+                    case "Ending l (Playing various tracks(Ending Screen))":
+                        songChangingFunc("ending_l");
+                        break;
+                    case "Ending s (Playing various tracks(Ending Screen))":
+                        songChangingFunc("ending_s");
                         break;
                 }
             }
@@ -394,6 +413,18 @@ namespace JSRF_Song_Mod_Tool
                         case "Grace And Glory":
                             ftpSelectedFileToXbox("grace");
                             break;
+                        case "Failed (Over)":
+                            ftpSelectedFileToXbox("g_over");
+                            break;
+                        case "Cleared":
+                            ftpSelectedFileToXbox("clear");
+                            break;
+                        case "Title Song(Concept of Love":
+                            ftpSelectedFileToXbox("title");
+                            break;
+                        case "DJ Demo(Ill Victory Beat)":
+                            ftpSelectedFileToXbox("dj_demo1");
+                            break;
                         case "Set 1a":
                             ftpSelectedFileToXbox("s_set_01a");
                             break;
@@ -442,10 +473,23 @@ namespace JSRF_Song_Mod_Tool
                         case "Set 9b":
                             ftpSelectedFileToXbox("s_set_09b");
                             break;
-                    }
+                        case "Ending (Sweet Sould Brother (Toronto Remix))":
+                            ftpSelectedFileToXbox("ending");
+                            break;
+                        case "Ending l (Playing various tracks(Ending Screen))":
+                            ftpSelectedFileToXbox("ending_l");
+                            break;
+                        case "Ending s (Playing various tracks(Ending Screen))":
+                            ftpSelectedFileToXbox("ending_s");
+                            break;
+                        // Ending (Sweet Sould Brother (Toronto Remix))
+                        //Ending l (Playing various tracks(Ending Screen))
+                        //Ending s (Playing various tracks(Ending Screen))
+                }
                 } else {
                     MessageBox.Show("XBox FTP Settings NOT correct and/or no Song Selected", "Error"); // Error reporting.
                 }
             }
-        }
+
+    }
 }

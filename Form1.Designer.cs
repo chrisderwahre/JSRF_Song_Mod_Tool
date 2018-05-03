@@ -43,25 +43,25 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.ftptoxbox_btn = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.whatarethesetfiles = new System.Windows.Forms.LinkLabel();
-            this.jsrflocalfiles = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.XBoxIP = new System.Windows.Forms.TextBox();
-            this.XBoxPort = new System.Windows.Forms.TextBox();
-            this.XBoxUser = new System.Windows.Forms.TextBox();
-            this.XBoxPassword = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.XBoxJSRFGamePath = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.XBoxJSRFGamePath = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.XBoxPassword = new System.Windows.Forms.TextBox();
+            this.XBoxUser = new System.Windows.Forms.TextBox();
+            this.XBoxPort = new System.Windows.Forms.TextBox();
+            this.XBoxIP = new System.Windows.Forms.TextBox();
+            this.jsrflocalfiles = new System.Windows.Forms.GroupBox();
+            this.whatarethesetfiles = new System.Windows.Forms.LinkLabel();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.jsrflocalfiles.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.jsrflocalfiles.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -118,6 +118,10 @@
             "Sweet Soul Brother (B.B. Rights Mix)",
             "That\'s Enough (B.B. Rights Mix)",
             "Grace And Glory",
+            "Failed (Over)",
+            "Cleared",
+            "Title Song (Concept of Love)",
+            "DJ Demo (Ill Victory Beat)",
             "Set 1a",
             "Set 1b",
             "Set 2a",
@@ -133,7 +137,10 @@
             "Set 8a",
             "Set 8b",
             "Set 9a",
-            "Set 9b"});
+            "Set 9b",
+            "Ending (Sweet Sould Brother (Toronto Remix))",
+            "Ending l (Playing various tracks (Ending Screen))",
+            "Ending s (Playing various tracks (Ending Screen))"});
             this.listBox1.Location = new System.Drawing.Point(11, 26);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(327, 264);
@@ -251,28 +258,14 @@
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // whatarethesetfiles
+            // label10
             // 
-            this.whatarethesetfiles.AutoSize = true;
-            this.whatarethesetfiles.Location = new System.Drawing.Point(18, 409);
-            this.whatarethesetfiles.Name = "whatarethesetfiles";
-            this.whatarethesetfiles.Size = new System.Drawing.Size(115, 13);
-            this.whatarethesetfiles.TabIndex = 11;
-            this.whatarethesetfiles.TabStop = true;
-            this.whatarethesetfiles.Text = "What are the Set files?";
-            this.whatarethesetfiles.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.whatarethesetfiles_LinkClicked);
-            // 
-            // jsrflocalfiles
-            // 
-            this.jsrflocalfiles.Controls.Add(this.textBox1);
-            this.jsrflocalfiles.Controls.Add(this.button3);
-            this.jsrflocalfiles.Controls.Add(this.label3);
-            this.jsrflocalfiles.Location = new System.Drawing.Point(6, 6);
-            this.jsrflocalfiles.Name = "jsrflocalfiles";
-            this.jsrflocalfiles.Size = new System.Drawing.Size(332, 54);
-            this.jsrflocalfiles.TabIndex = 8;
-            this.jsrflocalfiles.TabStop = false;
-            this.jsrflocalfiles.Text = "JSRF Local Files";
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(12, 269);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(202, 13);
+            this.label10.TabIndex = 10;
+            this.label10.Text = "JSRF Sound Path = Media/Z_ADX/BGM";
             // 
             // groupBox2
             // 
@@ -293,33 +286,48 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "FTP Settings";
             // 
-            // XBoxIP
+            // XBoxJSRFGamePath
             // 
-            this.XBoxIP.Location = new System.Drawing.Point(145, 19);
-            this.XBoxIP.Name = "XBoxIP";
-            this.XBoxIP.Size = new System.Drawing.Size(155, 20);
-            this.XBoxIP.TabIndex = 0;
+            this.XBoxJSRFGamePath.Location = new System.Drawing.Point(145, 147);
+            this.XBoxJSRFGamePath.Name = "XBoxJSRFGamePath";
+            this.XBoxJSRFGamePath.Size = new System.Drawing.Size(155, 20);
+            this.XBoxJSRFGamePath.TabIndex = 9;
             // 
-            // XBoxPort
+            // label9
             // 
-            this.XBoxPort.Location = new System.Drawing.Point(145, 47);
-            this.XBoxPort.Name = "XBoxPort";
-            this.XBoxPort.Size = new System.Drawing.Size(155, 20);
-            this.XBoxPort.TabIndex = 1;
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(13, 150);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(126, 13);
+            this.label9.TabIndex = 8;
+            this.label9.Text = "JSRF Game Sound Path:";
             // 
-            // XBoxUser
+            // label8
             // 
-            this.XBoxUser.Location = new System.Drawing.Point(145, 73);
-            this.XBoxUser.Name = "XBoxUser";
-            this.XBoxUser.Size = new System.Drawing.Size(155, 20);
-            this.XBoxUser.TabIndex = 2;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(13, 102);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(84, 13);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "XBox Password:";
             // 
-            // XBoxPassword
+            // label7
             // 
-            this.XBoxPassword.Location = new System.Drawing.Point(145, 99);
-            this.XBoxPassword.Name = "XBoxPassword";
-            this.XBoxPassword.Size = new System.Drawing.Size(155, 20);
-            this.XBoxPassword.TabIndex = 3;
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(13, 76);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(60, 13);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "XBox User:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(13, 50);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(57, 13);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "XBox Port:";
             // 
             // label5
             // 
@@ -331,57 +339,56 @@
             this.label5.Text = "XBox IP:";
             this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
-            // label6
+            // XBoxPassword
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 50);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(57, 13);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "XBox Port:";
+            this.XBoxPassword.Location = new System.Drawing.Point(145, 99);
+            this.XBoxPassword.Name = "XBoxPassword";
+            this.XBoxPassword.Size = new System.Drawing.Size(155, 20);
+            this.XBoxPassword.TabIndex = 3;
             // 
-            // label7
+            // XBoxUser
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(13, 76);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(60, 13);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "XBox User:";
+            this.XBoxUser.Location = new System.Drawing.Point(145, 73);
+            this.XBoxUser.Name = "XBoxUser";
+            this.XBoxUser.Size = new System.Drawing.Size(155, 20);
+            this.XBoxUser.TabIndex = 2;
             // 
-            // label8
+            // XBoxPort
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(13, 102);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(84, 13);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "XBox Password:";
+            this.XBoxPort.Location = new System.Drawing.Point(145, 47);
+            this.XBoxPort.Name = "XBoxPort";
+            this.XBoxPort.Size = new System.Drawing.Size(155, 20);
+            this.XBoxPort.TabIndex = 1;
             // 
-            // label9
+            // XBoxIP
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(13, 150);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(126, 13);
-            this.label9.TabIndex = 8;
-            this.label9.Text = "JSRF Game Sound Path:";
+            this.XBoxIP.Location = new System.Drawing.Point(145, 19);
+            this.XBoxIP.Name = "XBoxIP";
+            this.XBoxIP.Size = new System.Drawing.Size(155, 20);
+            this.XBoxIP.TabIndex = 0;
             // 
-            // XBoxJSRFGamePath
+            // jsrflocalfiles
             // 
-            this.XBoxJSRFGamePath.Location = new System.Drawing.Point(145, 147);
-            this.XBoxJSRFGamePath.Name = "XBoxJSRFGamePath";
-            this.XBoxJSRFGamePath.Size = new System.Drawing.Size(155, 20);
-            this.XBoxJSRFGamePath.TabIndex = 9;
+            this.jsrflocalfiles.Controls.Add(this.textBox1);
+            this.jsrflocalfiles.Controls.Add(this.button3);
+            this.jsrflocalfiles.Controls.Add(this.label3);
+            this.jsrflocalfiles.Location = new System.Drawing.Point(6, 6);
+            this.jsrflocalfiles.Name = "jsrflocalfiles";
+            this.jsrflocalfiles.Size = new System.Drawing.Size(332, 54);
+            this.jsrflocalfiles.TabIndex = 8;
+            this.jsrflocalfiles.TabStop = false;
+            this.jsrflocalfiles.Text = "JSRF Local Files";
             // 
-            // label10
+            // whatarethesetfiles
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(12, 269);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(202, 13);
-            this.label10.TabIndex = 10;
-            this.label10.Text = "JSRF Sound Path = Media/Z_ADX/BGM";
+            this.whatarethesetfiles.AutoSize = true;
+            this.whatarethesetfiles.Location = new System.Drawing.Point(18, 409);
+            this.whatarethesetfiles.Name = "whatarethesetfiles";
+            this.whatarethesetfiles.Size = new System.Drawing.Size(115, 13);
+            this.whatarethesetfiles.TabIndex = 11;
+            this.whatarethesetfiles.TabStop = true;
+            this.whatarethesetfiles.Text = "What are the Set files?";
+            this.whatarethesetfiles.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.whatarethesetfiles_LinkClicked);
             // 
             // Form1
             // 
@@ -405,10 +412,10 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            this.jsrflocalfiles.ResumeLayout(false);
-            this.jsrflocalfiles.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.jsrflocalfiles.ResumeLayout(false);
+            this.jsrflocalfiles.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
