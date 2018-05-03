@@ -284,9 +284,9 @@ namespace JSRF_Song_Mod_Tool
         {
             if (File.Exists("Set File Info.txt") || File.Exists("set file info.txt") || File.Exists("set_file_info.txt")) // Checks if a local copy of the text file exist
             {
-                string path = Directory.GetCurrentDirectory();
-                Process.Start(path + "/Set file info.txt");
-                Process.Start(path + "/set_file_info.txt");
+                string path = Directory.GetCurrentDirectory(); // Gets the current Directory
+                Process.Start(path + "/Set file info.txt"); // Starts the file
+                Process.Start(path + "/set_file_info.txt"); // Starts the file
             } else {
                 Process.Start("https://pastebin.com/raw/spiE5xup"); // Opens a link in Browser for the set file information
             }
