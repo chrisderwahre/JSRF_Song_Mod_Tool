@@ -16,10 +16,10 @@ using System.Xml.Linq;
 
 namespace JSRF_Song_Mod_Tool
 {
-
     public partial class Form1 : Form
     {
-
+        String version = "1.0.6"; // version string
+        String mode = "Release"; // mode string
         public void ftpSelectedFileToXbox(string songname)
         {      
             FtpClient ftpClient = new FtpClient("ftp://" + XBoxIP.Text + ":" + XBoxPort.Text, XBoxUser.Text, XBoxPassword.Text); // Connects to the selected ip address with the selected port and the selected user and password
@@ -76,12 +76,12 @@ namespace JSRF_Song_Mod_Tool
         public Form1()
         {
             InitializeComponent(); // The standard C# shit.
+            this.Text = "JSRF Song Mod Tool [" + version + "]";
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            String version = "1.0.4"; // version string
-            String mode = "Debug"; // mode string
+
             MessageBox.Show("Version: " + version + "  " + mode + "\n\nJSRF Song Mod Tool by ChrisderWahre 2018\n\nContributors:\n -neodos (Helped me with FTP stuff)\n -BURRRR (Helped me with the set files)", "JSRF Song Mod Tool"); // About Button with info about what version is running
         }
 
@@ -290,12 +290,45 @@ namespace JSRF_Song_Mod_Tool
 
             // ** NOTE TO MYSELF ADD A CONFIG.XML AUTOLOADER TO MAKE DEBUGGING WAY EASIER ** //
 
-            
-           // Basic Config if not Config file has been found
-            XBoxPassword.Text = "xbox"; // Sets standart settings for the XBox Password textbox
-            XBoxPort.Text = "21"; // Sets standart settings for the XBox IP textbox
-            XBoxUser.Text = "xbox"; // Sets standart settings for the XBox User textbox
-            XBoxJSRFGamePath.Text = "/E/Games/Jet Set Radio Future/Media/Z_ADX/BGM"; // Sets standart settings for the XBox JSRF Path textbox
+            String path = Directory.GetCurrentDirectory();
+
+            if (File.Exists(path + "/Config.xml"))
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(path + "/Config.xml");
+
+                XmlNode NodeXBoxIP = doc.SelectSingleNode("/Config/XBoxIP");
+                ListViewItem NXBoxIP = new ListViewItem(NodeXBoxIP.InnerText);
+
+                XmlNode NodeXBoxPort = doc.SelectSingleNode("/Config/XBoxPort");
+                ListViewItem NXBoxPort = new ListViewItem(NodeXBoxPort.InnerText);
+
+                XmlNode NodeXBoxUser = doc.SelectSingleNode("/Config/XBoxUser");
+                ListViewItem NXBoxUser = new ListViewItem(NodeXBoxUser.InnerText);
+
+                XmlNode NodeXBoxPassword = doc.SelectSingleNode("/Config/XBoxPassword");
+                ListViewItem NXBoxPassword = new ListViewItem(NodeXBoxPassword.InnerText);
+
+                XmlNode NodeXBoxSongPath = doc.SelectSingleNode("/Config/XBoxSongPath");
+                ListViewItem NXBoxSongPath = new ListViewItem(NodeXBoxSongPath.InnerText);
+
+                XmlNode NodeLocalSongPath = doc.SelectSingleNode("/Config/LocalSongPath");
+                ListViewItem NLocalSongPath = new ListViewItem(NodeLocalSongPath.InnerText);
+
+                XBoxIP.Text = NXBoxIP.Text;
+                XBoxPort.Text = NXBoxPort.Text;
+                XBoxUser.Text = NXBoxUser.Text;
+                XBoxPassword.Text = NXBoxPassword.Text;
+                XBoxJSRFGamePath.Text = NXBoxSongPath.Text;
+                textBox1.Text = NLocalSongPath.Text;
+            } else { 
+
+                // Basic Config if not Config file has been found
+                XBoxPassword.Text = "xbox"; // Sets standart settings for the XBox Password textbox
+                XBoxPort.Text = "21"; // Sets standart settings for the XBox IP textbox
+                XBoxUser.Text = "xbox"; // Sets standart settings for the XBox User textbox
+                XBoxJSRFGamePath.Text = "/E/Games/Jet Set Radio Future/Media/Z_ADX/BGM"; // Sets standart settings for the XBox JSRF Path textbox
+            }
             
         } 
 
@@ -490,6 +523,5 @@ namespace JSRF_Song_Mod_Tool
                     MessageBox.Show("XBox FTP Settings NOT correct and/or no Song Selected", "Error"); // Error reporting.
                 }
             }
-
     }
 }
