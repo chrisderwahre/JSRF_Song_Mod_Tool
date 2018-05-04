@@ -1,5 +1,14 @@
 # Versions
 
+# 1.0.6
+
+Autoloads Config.xml
+
+# 1.0.5
+
+Added new files to mod
+Checks if a local file of https://pastebin.com/raw/spiE5xup exist in the folder with the name set_file_info.txt or set file info.txt if not it opens the page.
+
 # 1.0.4
 
 Big release, 
