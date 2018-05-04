@@ -20,6 +20,20 @@ What loads what?:
  - XBoxSongPath = loads the XBox Song Path, ex: /E/Games/Jet Set Radio Future/Media/Z_ADX/BGM
  - LocalSongPath = loads the Local Song Path, ex: C:/Users/Chris/Desktop/JSRF/Media/Z_ADX/BGM
  
+Example:
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<Config>
+	<XBoxIP></XBoxIP>
+	<XBoxPort>21</XBoxPort>
+	<XBoxUser>xbox</XBoxUser>
+	<XBoxPassword>xbox</XBoxPassword>
+	<XBoxSongPath>/E/Games/Jet Set Radio Future/Media/Z_ADX/BGM</XBoxSongPath>
+	<LocalSongPath></LocalSongPath>
+</Config>	
+
+```
+ 
 Other settings and a "Save" button in the tool will follow.
 # Credit
 
