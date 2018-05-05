@@ -33,7 +33,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.replaceBtn = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
@@ -57,6 +57,7 @@
             this.XBoxIP = new System.Windows.Forms.TextBox();
             this.jsrflocalfiles = new System.Windows.Forms.GroupBox();
             this.whatarethesetfiles = new System.Windows.Forms.LinkLabel();
+            this.saveBtn = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -155,16 +156,16 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Made by ChrisderWahre 2018";
             // 
-            // button2
+            // replaceBtn
             // 
-            this.button2.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.button2.Location = new System.Drawing.Point(121, 296);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(217, 23);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Replace this Song!";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.replaceBtn.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.replaceBtn.Location = new System.Drawing.Point(121, 296);
+            this.replaceBtn.Name = "replaceBtn";
+            this.replaceBtn.Size = new System.Drawing.Size(217, 23);
+            this.replaceBtn.TabIndex = 4;
+            this.replaceBtn.Text = "Replace this Song!";
+            this.replaceBtn.UseVisualStyleBackColor = true;
+            this.replaceBtn.Click += new System.EventHandler(this.button2_Click);
             // 
             // label3
             // 
@@ -226,7 +227,7 @@
             this.tabPage1.Controls.Add(this.ftptoxbox_btn);
             this.tabPage1.Controls.Add(this.listBox1);
             this.tabPage1.Controls.Add(this.label4);
-            this.tabPage1.Controls.Add(this.button2);
+            this.tabPage1.Controls.Add(this.replaceBtn);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -247,6 +248,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.saveBtn);
             this.tabPage2.Controls.Add(this.label10);
             this.tabPage2.Controls.Add(this.groupBox2);
             this.tabPage2.Controls.Add(this.jsrflocalfiles);
@@ -389,6 +391,7 @@
             this.whatarethesetfiles.TabStop = true;
             this.whatarethesetfiles.Text = "What are the Set files?";
             this.whatarethesetfiles.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.whatarethesetfiles_LinkClicked);
+      
             // 
             // Form1
             // 
@@ -403,6 +406,7 @@
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(392, 470);
             this.MinimumSize = new System.Drawing.Size(372, 460);
             this.Name = "Form1";
             this.Text = "JSRF Song Mod Tool";
@@ -427,7 +431,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button replaceBtn;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button3;
@@ -451,6 +455,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button saveBtn;
     }
 }
 

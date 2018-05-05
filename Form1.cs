@@ -1,30 +1,34 @@
 ﻿using Lib.Common;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
-using System.Xml.Linq;
 
 namespace JSRF_Song_Mod_Tool
 {
     public partial class Form1 : Form
     {
-        String version = "1.0.6"; // version string
-        String mode = "Release"; // mode string
+        public String path = Directory.GetCurrentDirectory();
+        public String version = "1.0.7"; // version string
+        public String mode = "Debug"; // mode string
+
         public void ftpSelectedFileToXbox(string songname)
         {      
             FtpClient ftpClient = new FtpClient("ftp://" + XBoxIP.Text + ":" + XBoxPort.Text, XBoxUser.Text, XBoxPassword.Text); // Connects to the selected ip address with the selected port and the selected user and password
             ftpClient.delete(XBoxJSRFGamePath.Text + "/" + songname + ".adx"); // Deletes the old file so the new one can be ftp'd
             ftpClient.upload(XBoxJSRFGamePath.Text + "/" + songname + ".adx", textBox1.Text.Replace(@"\", "/") + "/" + songname + ".adx"); // Uploads the new file
+        }
+
+        public string getStringFromConfigXML(string pathToString)
+        {
+            XmlDocument doc = new XmlDocument(); // Names a new XmlDocument doc
+            doc.Load(path + "/Config.xml"); // Loads the xml file
+
+            XmlNode node = doc.SelectSingleNode(pathToString); // Goes to the string
+            ListViewItem ItemToReturn = new ListViewItem(node.InnerText); // List Item
+
+            return ItemToReturn.Text; // Returns It
         }
 
         public void songChangingFunc(string songName) // Song Changing Function
@@ -76,19 +80,18 @@ namespace JSRF_Song_Mod_Tool
         public Form1()
         {
             InitializeComponent(); // The standard C# shit.
-            this.Text = "JSRF Song Mod Tool [" + version + "]";
+            this.Text = "JSRF Song Mod Tool [" + version + "]"; // Sets the Title with the current version
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
             MessageBox.Show("Version: " + version + "  " + mode + "\n\nJSRF Song Mod Tool by ChrisderWahre 2018\n\nContributors:\n -neodos (Helped me with FTP stuff)\n -BURRRR (Helped me with the set files)", "JSRF Song Mod Tool"); // About Button with info about what version is running
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            //** Removed these these Strings because they are unused. **//
-            MessageBox.Show("How to use:\n1. Select Your JSRF Sound Folder (Media/Z_ADX/BGM)\n2. Pick the Song to Replace\n3.Click the Button and Select the audio file of the new File\n4. Click the FTP to XBOX Button to ftp the selected to the XBox!", "Help"); // Tutorial Button
+            MessageBox.Show("How to use:\n1. Select Your JSRF Sound Folder (Media/Z_ADX/BGM)\n2. Pick the Song to Replace\n3.Click the Button and Select the audio file of the new File\n4.Configure the FTP Settings! \n5.Click the FTP to XBOX Button to ftp the selected to the XBox!", "Help"); // Tutorial Button
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -280,6 +283,8 @@ namespace JSRF_Song_Mod_Tool
             if (fbd.ShowDialog() == DialogResult.OK)
             {
                 textBox1.Text = fbd.SelectedPath;               // Sets the Selected Folder to the BGM Folder
+            } else {
+                MessageBox.Show("Couldn't load the Folder, option was not completed.", "Option not Completed.");
             }
         }
 
@@ -290,37 +295,20 @@ namespace JSRF_Song_Mod_Tool
 
             // ** NOTE TO MYSELF ADD A CONFIG.XML AUTOLOADER TO MAKE DEBUGGING WAY EASIER ** //
 
-            String path = Directory.GetCurrentDirectory();
+            
 
             if (File.Exists(path + "/Config.xml"))
             {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(path + "/Config.xml");
-
-                XmlNode NodeXBoxIP = doc.SelectSingleNode("/Config/XBoxIP");
-                ListViewItem NXBoxIP = new ListViewItem(NodeXBoxIP.InnerText);
-
-                XmlNode NodeXBoxPort = doc.SelectSingleNode("/Config/XBoxPort");
-                ListViewItem NXBoxPort = new ListViewItem(NodeXBoxPort.InnerText);
-
-                XmlNode NodeXBoxUser = doc.SelectSingleNode("/Config/XBoxUser");
-                ListViewItem NXBoxUser = new ListViewItem(NodeXBoxUser.InnerText);
-
-                XmlNode NodeXBoxPassword = doc.SelectSingleNode("/Config/XBoxPassword");
-                ListViewItem NXBoxPassword = new ListViewItem(NodeXBoxPassword.InnerText);
-
-                XmlNode NodeXBoxSongPath = doc.SelectSingleNode("/Config/XBoxSongPath");
-                ListViewItem NXBoxSongPath = new ListViewItem(NodeXBoxSongPath.InnerText);
-
-                XmlNode NodeLocalSongPath = doc.SelectSingleNode("/Config/LocalSongPath");
-                ListViewItem NLocalSongPath = new ListViewItem(NodeLocalSongPath.InnerText);
-
-                XBoxIP.Text = NXBoxIP.Text;
-                XBoxPort.Text = NXBoxPort.Text;
-                XBoxUser.Text = NXBoxUser.Text;
-                XBoxPassword.Text = NXBoxPassword.Text;
-                XBoxJSRFGamePath.Text = NXBoxSongPath.Text;
-                textBox1.Text = NLocalSongPath.Text;
+                try {
+                    XBoxIP.Text = getStringFromConfigXML("/Config/XBoxIP");
+                    XBoxPort.Text = getStringFromConfigXML("/Config/XBoxPort");
+                    XBoxUser.Text = getStringFromConfigXML("/Config/XBoxUser");
+                    XBoxPassword.Text = getStringFromConfigXML("/Config/XBoxPassword");
+                    XBoxJSRFGamePath.Text = getStringFromConfigXML("/Config/XBoxSongPath");
+                    textBox1.Text = getStringFromConfigXML("/Config/LocalSongPath");
+                } catch {
+                    MessageBox.Show("A Config file is loaded but isn't Complete, please check the Official Github page for an example (github.com/chrisderwahre/JSRF_Song_Mod_Tool) or create a new one.", "Config File Error!");
+                }
             } else { 
 
                 // Basic Config if not Config file has been found
@@ -334,10 +322,10 @@ namespace JSRF_Song_Mod_Tool
 
         private void whatarethesetfiles_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (File.Exists("Set File Info.txt") || File.Exists("set file info.txt") || File.Exists("set_file_info.txt")) // Checks if a local copy of the text file exist
+            if (File.Exists("Set File Info.txt") || File.Exists("set file info.txt")) // Checks if a local copy of the text file exist
             {
-                string path = Directory.GetCurrentDirectory(); // Gets the current Directory
                 Process.Start(path + "/Set file info.txt"); // Starts the file
+            } else if (File.Exists("set_file_info.txt")) {
                 Process.Start(path + "/set_file_info.txt"); // Starts the file
             } else {
                 Process.Start("https://pastebin.com/raw/spiE5xup"); // Opens a link in Browser for the set file information
