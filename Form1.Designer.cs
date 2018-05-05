@@ -57,7 +57,6 @@
             this.XBoxIP = new System.Windows.Forms.TextBox();
             this.jsrflocalfiles = new System.Windows.Forms.GroupBox();
             this.whatarethesetfiles = new System.Windows.Forms.LinkLabel();
-            this.saveBtn = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -248,7 +247,6 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.saveBtn);
             this.tabPage2.Controls.Add(this.label10);
             this.tabPage2.Controls.Add(this.groupBox2);
             this.tabPage2.Controls.Add(this.jsrflocalfiles);
@@ -391,7 +389,6 @@
             this.whatarethesetfiles.TabStop = true;
             this.whatarethesetfiles.Text = "What are the Set files?";
             this.whatarethesetfiles.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.whatarethesetfiles_LinkClicked);
-      
             // 
             // Form1
             // 
@@ -455,7 +452,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button saveBtn;
     }
 }
 
