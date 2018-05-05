@@ -105,8 +105,6 @@ namespace JSRF_Song_Mod_Tool
                 MessageBox.Show("No Sound Media Files Selected!", "No Sound Files!"); // Output
             }
 
-            // ** Removed these Comments ** //
-
             if (listBox1.Text != "" || textBox1.Text != "")         // Checks if the text and list Box aren't Empty
             {
 
