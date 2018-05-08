@@ -9,6 +9,7 @@ namespace JSRF_Song_Mod_Tool
 {
     public partial class Form1 : Form
     {
+
         public String path = Directory.GetCurrentDirectory();
         public String version = "1.0.7"; // version string
         public String mode = "Debug"; // mode string
@@ -81,7 +82,6 @@ namespace JSRF_Song_Mod_Tool
         {
             InitializeComponent(); // The standard C# shit.
             this.Text = "JSRF Song Mod Tool [" + version + "]"; // Sets the Title with the current version
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -104,6 +104,8 @@ namespace JSRF_Song_Mod_Tool
             {
                 MessageBox.Show("No Sound Media Files Selected!", "No Sound Files!"); // Output
             }
+
+            // ** Removed these Comments ** //
 
             if (listBox1.Text != "" || textBox1.Text != "")         // Checks if the text and list Box aren't Empty
             {
@@ -290,10 +292,6 @@ namespace JSRF_Song_Mod_Tool
         {
             tabPage1.Text = @"Tool"; // Sets the Tab page names
             tabPage2.Text = @"Settings"; // Sets the Tab page names
-
-            // ** NOTE TO MYSELF ADD A CONFIG.XML AUTOLOADER TO MAKE DEBUGGING WAY EASIER ** //
-
-            
 
             if (File.Exists(path + "/Config.xml"))
             {
@@ -509,5 +507,6 @@ namespace JSRF_Song_Mod_Tool
                     MessageBox.Show("XBox FTP Settings NOT correct and/or no Song Selected", "Error"); // Error reporting.
                 }
             }
+        
     }
 }
