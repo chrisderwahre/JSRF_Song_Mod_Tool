@@ -19,6 +19,7 @@ namespace JSRF_Song_Mod_Tool
             FtpClient ftpClient = new FtpClient("ftp://" + XBoxIP.Text + ":" + XBoxPort.Text, XBoxUser.Text, XBoxPassword.Text); // Connects to the selected ip address with the selected port and the selected user and password
             ftpClient.delete(XBoxJSRFGamePath.Text + "/" + songname + ".adx"); // Deletes the old file so the new one can be ftp'd
             ftpClient.upload(XBoxJSRFGamePath.Text + "/" + songname + ".adx", textBox1.Text.Replace(@"\", "/") + "/" + songname + ".adx"); // Uploads the new file
+            Form2.addLineToDebugLog("Send file to FTP: " + songname);
         }
 
         public string getStringFromConfigXML(string pathToString)
@@ -30,6 +31,8 @@ namespace JSRF_Song_Mod_Tool
             ListViewItem ItemToReturn = new ListViewItem(node.InnerText); // List Item
 
             return ItemToReturn.Text; // Returns It
+            Form2.addLineToDebugLog("Got the InnerText of: " + pathToString);
+
         }
 
         public void songChangingFunc(string songName) // Song Changing Function
@@ -37,6 +40,7 @@ namespace JSRF_Song_Mod_Tool
             if (!File.Exists(textBox1.Text + "/" + songName + ".adx")) // Checks if the Folder is Correct
             {
                 MessageBox.Show("Wrong Sound Media Folder: Couldn't find Original File to Replace", "Wrong Sound Media Folder"); // Outout
+                Form2.addLineToDebugLog("Given out error: Wrong Sound Media Folder: Couldn't find Original File to Replace");
                 return;
             }
 
@@ -46,7 +50,7 @@ namespace JSRF_Song_Mod_Tool
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-
+                Form2.addLineToDebugLog("Open File Dialog: OK");
                 string path = Directory.GetCurrentDirectory(); // Gets the current direcory
 
                 if (".wav".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase)) // Checks if the selected file is a wav file
@@ -66,6 +70,7 @@ namespace JSRF_Song_Mod_Tool
                     Process.Start(startInfo); // Starts the process with the settings from above
 
                     MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!"); // Output
+                    Form2.addLineToDebugLog("Converted file and Replaced: " + songName);
                 }
 
                 if (".adx".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase)) // Checks if a adx file is selected
@@ -74,6 +79,7 @@ namespace JSRF_Song_Mod_Tool
                     File.Copy(ofd.FileName, textBox1.Text + "/" + songName + ".adx"); // Copy File
 
                     MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!"); // Output
+                    Form2.addLineToDebugLog("Replaced: " + songName);
                 }
             }
         }
@@ -82,16 +88,19 @@ namespace JSRF_Song_Mod_Tool
         {
             InitializeComponent(); // The standard C# shit.
             this.Text = "JSRF Song Mod Tool [" + version + "]"; // Sets the Title with the current version
+            Form2.addLineToDebugLog("Initialized Component and Started version:" + version);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Version: " + version + "  " + mode + "\n\nJSRF Song Mod Tool by ChrisderWahre 2018\n\nContributors:\n -neodos (Helped me with FTP stuff)\n -BURRRR (Helped me with the set files)", "JSRF Song Mod Tool"); // About Button with info about what version is running
+            Form2.addLineToDebugLog("Opened About Message Box");
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             MessageBox.Show("How to use:\n1. Select Your JSRF Sound Folder (Media/Z_ADX/BGM)\n2. Pick the Song to Replace\n3.Click the Button and Select the audio file of the new File\n4.Configure the FTP Settings! \n5.Click the FTP to XBOX Button to ftp the selected to the XBox!", "Help"); // Tutorial Button
+            Form2.addLineToDebugLog("Opened Tutorial Message Box");
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -99,10 +108,12 @@ namespace JSRF_Song_Mod_Tool
             if (listBox1.Text == "") // Checks if a song is selected
             {
                 MessageBox.Show("No Song is Selected please Select a song to Continue", "No Song Selected"); // Outpot
+                Form2.addLineToDebugLog("Given out error: No Song is Selected please Select a song to Continue");
             }
             if (textBox1.Text == "") // Checks if the Game files are selected
             {
                 MessageBox.Show("No Sound Media Files Selected!", "No Sound Files!"); // Output
+                Form2.addLineToDebugLog("Given out error: No Sound Media Files Selected!");
             }
 
             // ** Removed these Comments ** //
@@ -273,6 +284,7 @@ namespace JSRF_Song_Mod_Tool
                     case "Ending s (Playing various tracks(Ending Screen))":
                         songChangingFunc("ending_s");
                         break;
+                    JSRF_Song_Mod_Tool.Form2.addLineToDebugLog("Runned songChangingFunc with: " + listBox1.Text);
                 }
             }
         }
@@ -283,8 +295,10 @@ namespace JSRF_Song_Mod_Tool
             if (fbd.ShowDialog() == DialogResult.OK)
             {
                 textBox1.Text = fbd.SelectedPath;               // Sets the Selected Folder to the BGM Folder
+                Form2.addLineToDebugLog("Set the Textbox' text: textBox1");
             } else {
                 MessageBox.Show("Couldn't load the Folder, option was not completed.", "Option not Completed.");
+                Form2.addLineToDebugLog("Given out error: Couldn't load the Folder, option was not completed");
             }
         }
 
@@ -302,6 +316,7 @@ namespace JSRF_Song_Mod_Tool
                     XBoxPassword.Text = getStringFromConfigXML("/Config/XBoxPassword");
                     XBoxJSRFGamePath.Text = getStringFromConfigXML("/Config/XBoxSongPath");
                     textBox1.Text = getStringFromConfigXML("/Config/LocalSongPath");
+                    Form2.addLineToDebugLog("Opened Config File");
                 } catch {
                     MessageBox.Show("A Config file is loaded but isn't Complete, please check the Official Github page for an example (github.com/chrisderwahre/JSRF_Song_Mod_Tool) or create a new one.", "Config File Error!");
                 }
@@ -312,6 +327,7 @@ namespace JSRF_Song_Mod_Tool
                 XBoxPort.Text = "21"; // Sets standart settings for the XBox IP textbox
                 XBoxUser.Text = "xbox"; // Sets standart settings for the XBox User textbox
                 XBoxJSRFGamePath.Text = "/E/Games/Jet Set Radio Future/Media/Z_ADX/BGM"; // Sets standart settings for the XBox JSRF Path textbox
+                Form2.addLineToDebugLog("Used default settings");
             }
             
         } 
@@ -321,10 +337,13 @@ namespace JSRF_Song_Mod_Tool
             if (File.Exists("Set File Info.txt") || File.Exists("set file info.txt")) // Checks if a local copy of the text file exist
             {
                 Process.Start(path + "/Set file info.txt"); // Starts the file
+                Form2.addLineToDebugLog("Started: Set file info.txt");
             } else if (File.Exists("set_file_info.txt")) {
                 Process.Start(path + "/set_file_info.txt"); // Starts the file
+                Form2.addLineToDebugLog("Started: set_file_info.txt");
             } else {
                 Process.Start("https://pastebin.com/raw/spiE5xup"); // Opens a link in Browser for the set file information
+                Form2.addLineToDebugLog("Started: The Link to the Pastebin Page");
             }
         }
 
@@ -505,6 +524,7 @@ namespace JSRF_Song_Mod_Tool
                 }
                 } else {
                     MessageBox.Show("XBox FTP Settings NOT correct and/or no Song Selected", "Error"); // Error reporting.
+                JSRF_Song_Mod_Tool.Form2.addLineToDebugLog("Given out error: XBox FTP Settings NOT correct and/or no Song Selected");
                 }
             }
         
