@@ -18,11 +18,11 @@ namespace JSRF_Song_Mod_Tool
             InitializeComponent();
         }
 
-        public void addLineToDebugLog(string text)
+        public static void addLineToDebugLog(string text)
         {
-            string[] tempArray = new string[this.richTextBox1.Lines.Length];
-            string[] tempArray2 = new string[this.richTextBox1.Lines.Length + 1];
-            tempArray = this.richTextBox1.Lines;
+            string[] tempArray = new string[Form2.richTextBox1.Lines.Length];
+            string[] tempArray2 = new string[richTextBox1.Lines.Length + 1];
+            tempArray = richTextBox1.Lines;
 
             int count = 0;
             tempArray2[count] = tempArray[0];
@@ -42,12 +42,17 @@ namespace JSRF_Song_Mod_Tool
             fs.Flush();
             fs.Close();
             string line;
-            this.richTextBox1.Clear();
+            richTextBox1.Clear();
             System.IO.StreamReader file = new System.IO.StreamReader(strfn);
             while ((line = file.ReadLine()) != null)
             {
-                this.richTextBox1.AppendText("[" + DateTime.Now + "] " +line + "\n");
+                richTextBox1.AppendText("[" + DateTime.Now + "] " + line + "\n");
             }
+        }
+
+        internal static void addLineToDebugLog2(String message)
+        {
+            addLineToDebugLog(message);
         }
     }
 }

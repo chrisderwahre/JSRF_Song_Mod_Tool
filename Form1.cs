@@ -88,7 +88,6 @@ namespace JSRF_Song_Mod_Tool
         {
             InitializeComponent(); // The standard C# shit.
             this.Text = "JSRF Song Mod Tool [" + version + "]"; // Sets the Title with the current version
-            Form2.addLineToDebugLog("Initialized Component and Started version:" + version);
         }
 
         private void button1_Click(object sender, EventArgs e)
