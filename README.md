@@ -1,11 +1,11 @@
 [![Hits](https://hits.dwyl.com/chrisderwahre/JSRF_Song_Mod_Tool.svg)](http://hits.dwyl.com/chrisderwahre/JSRF_Song_Mod_Tool)
-[![Downloads](https://img.shields.io/github/downloads/chrisderwahre/JSRF_Song_Mod_Tool/latest/total.svg)](https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/releases)
+[![Downloads](https://img.shields.io/github/downloads/chrisderwahre/JSRF_Song_Mod_Tool/latest/total.svg?label=Downloads&maxAge=60)](https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/releases)
 
 # JSRF Song Mod Tool
 A Song Mod Tool for Jet Set Radio Future! 
 
 # Download
-[![Download](https://img.shields.io/github/downloads/chrisderwahre/JSRF_Song_Mod_Tool/latest/total.svg)](https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/releases)
+[![Download](https://img.shields.io/github/downloads/chrisderwahre/JSRF_Song_Mod_Tool/latest/total.svg?label=Download&maxAge=60)](https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/releases)
 
 Yes we did it: [View the Set File Info](https://pastebin.com/raw/spiE5xup)
 
