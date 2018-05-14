@@ -1,3 +1,6 @@
+[![Hits](https://hits.dwyl.com/chrisderwahre/JSRF_Song_Mod_Tool.svg)]
+[![Downloads](https://img.shields.io/github/downloads/chrisderwahre/JSRF_Song_Mod_Tool/latest/total.svg)]
+
 # JSRF Song Mod Tool
 A Song Mod Tool for Jet Set Radio Future! 
 
