@@ -1,2 +1,9 @@
 language: csharp
-solution: "./JSRF Song Mod Tool.csproj"
+script:
+  - xbuild /p:Configuration=Debug "JSRF Song Mod Tool.csproj"
+before_install:
+  - sudo apt-get install nunit-console
+before_script:
+  - nuget restore "JSRF Song Mod Tool.csproj"
+after_script:
+  - nunit-console Tests/bin/Debug/Tests.dll
