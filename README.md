@@ -1,5 +1,6 @@
 [![Hits](https://hits.dwyl.com/chrisderwahre/JSRF_Song_Mod_Tool.svg)](http://hits.dwyl.com/chrisderwahre/JSRF_Song_Mod_Tool)
 [![Downloads](https://img.shields.io/github/downloads/chrisderwahre/JSRF_Song_Mod_Tool/latest/total.svg?label=Downloads&maxAge=60)](https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/releases)
+[![](https://travis-ci.org/chrisderwahre/JSRF_Song_Mod_Tool.svg?branch=master)](https://github.com/chrisderwahre/JSRF_Song_Mod_Tool)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/blob/master/LICENSE)
 
 # JSRF Song Mod Tool
