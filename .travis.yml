@@ -1,0 +1,7 @@
+language: csharp
+solution: "./JSRF Song Mod Tool.csproj"
+install:
+- travis_retry nuget restore -source "https://www.nuget.org/api/v2" ./Fibonacci/JSRF Song Mod Tool.csproj
+script:
+- xbuild ./JSRF Song Mod Tool.csproj
+- mono ./Fibonacci/packages/xunit.runner.console*/tools/xunit.console.exe ./Fibonacci/Fibonacci.Tests/bin/Debug/Fibonacci.Tests.dll
