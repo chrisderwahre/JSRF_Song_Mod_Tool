@@ -1,6 +1,6 @@
 language: csharp
 script:
-  - xbuild /p:Configuration=Debug "JSRF Song Mod Tool.csproj"
+  - xbuild /p:Configuration=Release "JSRF Song Mod Tool.csproj"
 before_install:
   - sudo apt-get install nunit-console
 before_script:
