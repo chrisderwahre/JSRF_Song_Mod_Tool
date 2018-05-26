@@ -1,0 +1,4 @@
+# Sample gitignore page for c#
+*.yml
+*.config
+*.gitignore
