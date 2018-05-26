@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
+using NAudio.Wave;
+using System.Net;
 
 namespace JSRF_Song_Mod_Tool
 {
@@ -12,14 +14,14 @@ namespace JSRF_Song_Mod_Tool
 
         public String path = Directory.GetCurrentDirectory();
         public String version = "1.0.7"; // version string
-        public String mode = "Debug"; // mode string
+        public static String stVersion = "1.0.7";
+        public String mode = "Release"; // mode string
 
         public void ftpSelectedFileToXbox(string songname)
-        {      
+        {
             FtpClient ftpClient = new FtpClient("ftp://" + XBoxIP.Text + ":" + XBoxPort.Text, XBoxUser.Text, XBoxPassword.Text); // Connects to the selected ip address with the selected port and the selected user and password
             ftpClient.delete(XBoxJSRFGamePath.Text + "/" + songname + ".adx"); // Deletes the old file so the new one can be ftp'd
             ftpClient.upload(XBoxJSRFGamePath.Text + "/" + songname + ".adx", textBox1.Text.Replace(@"\", "/") + "/" + songname + ".adx"); // Uploads the new file
-            Form2.addLineToDebugLog("Send file to FTP: " + songname);
         }
 
         public string getStringFromConfigXML(string pathToString)
@@ -31,7 +33,30 @@ namespace JSRF_Song_Mod_Tool
             ListViewItem ItemToReturn = new ListViewItem(node.InnerText); // List Item
 
             return ItemToReturn.Text; // Returns It
-            Form2.addLineToDebugLog("Got the InnerText of: " + pathToString);
+
+        }
+
+        public string getStringFromLangXML(string pathToString)
+        {
+            XmlDocument doc = new XmlDocument(); // Names a new XmlDocument doc
+            doc.Load(path + "/lang.xml"); // Loads the xml file
+
+            XmlNode node = doc.SelectSingleNode(pathToString); // Goes to the string
+            ListViewItem ItemToReturn = new ListViewItem(node.InnerText); // List Item
+
+            return ItemToReturn.Text; // Returns It
+
+        }
+
+        public static string getStringFromLangFile(string pathToString)
+        {
+            XmlDocument doc = new XmlDocument(); // Names a new XmlDocument doc
+            doc.Load("lang.xml"); // Loads the xml file
+
+            XmlNode node = doc.SelectSingleNode(pathToString); // Goes to the string
+            ListViewItem ItemToReturn = new ListViewItem(node.InnerText); // List Item
+
+            return ItemToReturn.Text; // Returns It
 
         }
 
@@ -39,8 +64,14 @@ namespace JSRF_Song_Mod_Tool
         {
             if (!File.Exists(textBox1.Text + "/" + songName + ".adx")) // Checks if the Folder is Correct
             {
-                MessageBox.Show("Wrong Sound Media Folder: Couldn't find Original File to Replace", "Wrong Sound Media Folder"); // Outout
-                Form2.addLineToDebugLog("Given out error: Wrong Sound Media Folder: Couldn't find Original File to Replace");
+                if (File.Exists(path + "/lang.xml"))
+                {
+                    MessageBox.Show(getStringFromLangXML("/Config/NoFTPSettingsOrNoSong"), "Wrong Song Media Folder");
+                }
+                else
+                {
+                    MessageBox.Show("Wrong Sound Media Folder: Couldn't find Original File to Replace", "Wrong Song Media Folder"); // Outout
+                }
                 return;
             }
 
@@ -50,8 +81,38 @@ namespace JSRF_Song_Mod_Tool
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                Form2.addLineToDebugLog("Open File Dialog: OK");
                 string path = Directory.GetCurrentDirectory(); // Gets the current direcory
+
+                if (".mp3".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase)) // DOESNT WORK YET !!!
+                {
+                    File.Delete(textBox1.Text + "/" + songName + ".adx"); // Deletes adx
+
+                    using (Mp3FileReader mp3 = new Mp3FileReader(ofd.FileName)) // Creates a new Mp3 file reader with NAudio !!
+                    {
+                        using (WaveStream pcm = WaveFormatConversionStream.CreatePcmStream(mp3)) // Creates a new Wave (Format COnsersion) Stream with NAudio!
+                        {
+                            WaveFileWriter.CreateWaveFile("convert/tmp.wav", pcm); // Creates the new wav file with NAudio
+                        }
+                    }
+
+                    ProcessStartInfo startInfo = new ProcessStartInfo(); // Other shit
+                    startInfo.CreateNoWindow = false; // Other shit
+                    startInfo.UseShellExecute = false; // Other shit
+                    startInfo.FileName = path + "/convert/WAV2ADX.EXE";  // Filename for the .exe file
+                    startInfo.WindowStyle = ProcessWindowStyle.Hidden; // Not showning the cmd 
+                    startInfo.Arguments = '"' + path + "/convert/tmp.wav" + '"' + " " + '"' + textBox1.Text + @"\" + songName + ".adx" + '"'; // Argument for converting Wav files to adx!
+
+                    Process.Start(startInfo); // Starts the process with the settings from above
+
+                    if (File.Exists(path + "/lang.xml"))
+                    {
+                        MessageBox.Show(getStringFromLangXML("/Config/SuccesfullyReplaced").Replace("[SELECTED SONG]", listBox1.Text).Replace("[TO REPLACED FILE]", ofd.FileName));
+                    }
+                    else
+                    {
+                        MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!"); // Output
+                    }
+                }
 
                 if (".wav".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase)) // Checks if the selected file is a wav file
                 {
@@ -69,8 +130,14 @@ namespace JSRF_Song_Mod_Tool
 
                     Process.Start(startInfo); // Starts the process with the settings from above
 
-                    MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!"); // Output
-                    Form2.addLineToDebugLog("Converted file and Replaced: " + songName);
+                    if (File.Exists(path + "/lang.xml"))
+                    {
+                        MessageBox.Show(getStringFromLangXML("/Config/SuccesfullyReplaced").Replace("[SELECTED SONG]", listBox1.Text).Replace("[TO REPLACED FILE]", ofd.FileName));
+                    }
+                    else
+                    {
+                        MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!"); // Output
+                    }
                 }
 
                 if (".adx".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase)) // Checks if a adx file is selected
@@ -78,8 +145,14 @@ namespace JSRF_Song_Mod_Tool
                     File.Delete(textBox1.Text + "/" + songName + ".adx"); // Deleting File
                     File.Copy(ofd.FileName, textBox1.Text + "/" + songName + ".adx"); // Copy File
 
-                    MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!"); // Output
-                    Form2.addLineToDebugLog("Replaced: " + songName);
+                    if (File.Exists(path + "/lang.xml"))
+                    {
+                        MessageBox.Show(getStringFromLangXML("/Config/SuccesfullyReplacedADX").Replace("[SELECTED SONG]", listBox1.Text).Replace("[TO REPLACED FILE]", ofd.FileName));
+                    }
+                    else
+                    {
+                        MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!"); // Output
+                    }
                 }
             }
         }
@@ -92,27 +165,51 @@ namespace JSRF_Song_Mod_Tool
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Version: " + version + "  " + mode + "\n\nJSRF Song Mod Tool by ChrisderWahre 2018\n\nContributors:\n -neodos (Helped me with FTP stuff)\n -BURRRR (Helped me with the set files)", "JSRF Song Mod Tool"); // About Button with info about what version is running
-            Form2.addLineToDebugLog("Opened About Message Box");
+            if (File.Exists(path + "/lang.xml"))
+            {
+                MessageBox.Show(getStringFromLangXML("/Config/AboutButton").Replace("[VERSION]", version).Replace("[MODE]", mode), "JSRF Song Mod Tool");
+            }
+            else
+            {
+                MessageBox.Show("Version: " + version + "  " + mode + "\n\nJSRF Song Mod Tool by ChrisderWahre 2018\n\nContributors:\n -neodos (Helped me with FTP stuff)\n -BURRRR (Helped me with the set files)", "JSRF Song Mod Tool"); // About Button with info about what version is running
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("How to use:\n1. Select Your JSRF Sound Folder (Media/Z_ADX/BGM)\n2. Pick the Song to Replace\n3.Click the Button and Select the audio file of the new File\n4.Configure the FTP Settings! \n5.Click the FTP to XBOX Button to ftp the selected to the XBox!", "Help"); // Tutorial Button
-            Form2.addLineToDebugLog("Opened Tutorial Message Box");
+            if (File.Exists(path + "/lang.xml"))
+            {
+                MessageBox.Show(getStringFromLangXML("/Config/HelpButton").ToString().Replace("\n", "\n"), "Help");
+            }
+            else
+            {
+                MessageBox.Show("How to use:\n1. Select Your JSRF Sound Folder (Media/Z_ADX/BGM)\n2. Pick the Song to Replace\n3.Click the Button and Select the audio file of the new File\n4.Configure the FTP Settings! \n5.Click the FTP to XBOX Button to ftp the selected to the XBox!", "Help"); // Tutorial Button
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             if (listBox1.Text == "") // Checks if a song is selected
             {
-                MessageBox.Show("No Song is Selected please Select a song to Continue", "No Song Selected"); // Outpot
-                Form2.addLineToDebugLog("Given out error: No Song is Selected please Select a song to Continue");
+                if (File.Exists(path + "/lang.xml"))
+                {
+                    MessageBox.Show(getStringFromLangXML("/Config/NoSongSelected"), "No Song Selected");
+                }
+                else
+                {
+                    MessageBox.Show("No Song is Selected please Select a song to Continue", "No Song Selected"); // Outpot
+                }
             }
             if (textBox1.Text == "") // Checks if the Game files are selected
             {
-                MessageBox.Show("No Sound Media Files Selected!", "No Sound Files!"); // Output
-                Form2.addLineToDebugLog("Given out error: No Sound Media Files Selected!");
+                if (File.Exists(path + "/lang.xml"))
+                {
+                    MessageBox.Show(getStringFromLangXML("/Config/NoSongMediaFolder"), "No Song Media Files");
+                }
+                else
+                {
+                    MessageBox.Show("No Song Media Files Selected!", "No Sound Files!"); // Output
+                }
             }
 
             // ** Removed these Comments ** //
@@ -283,7 +380,6 @@ namespace JSRF_Song_Mod_Tool
                     case "Ending s (Playing various tracks(Ending Screen))":
                         songChangingFunc("ending_s");
                         break;
-                    JSRF_Song_Mod_Tool.Form2.addLineToDebugLog("Runned songChangingFunc with: " + listBox1.Text);
                 }
             }
         }
@@ -294,17 +390,19 @@ namespace JSRF_Song_Mod_Tool
             if (fbd.ShowDialog() == DialogResult.OK)
             {
                 textBox1.Text = fbd.SelectedPath;               // Sets the Selected Folder to the BGM Folder
-                Form2.addLineToDebugLog("Set the Textbox' text: textBox1");
             } else {
-                MessageBox.Show("Couldn't load the Folder, option was not completed.", "Option not Completed.");
-                Form2.addLineToDebugLog("Given out error: Couldn't load the Folder, option was not completed");
+                if (File.Exists(path + "/lang.xml"))
+                {
+                    MessageBox.Show(getStringFromLangXML("/Config/CouldntLoadFolder"), "Option not Completed");
+                } else
+                {
+                    MessageBox.Show("Couldn't load the Folder, option was not completed.", "Option not Completed.");
+                }
             }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            tabPage1.Text = @"Tool"; // Sets the Tab page names
-            tabPage2.Text = @"Settings"; // Sets the Tab page names
 
             if (File.Exists(path + "/Config.xml"))
             {
@@ -315,34 +413,59 @@ namespace JSRF_Song_Mod_Tool
                     XBoxPassword.Text = getStringFromConfigXML("/Config/XBoxPassword");
                     XBoxJSRFGamePath.Text = getStringFromConfigXML("/Config/XBoxSongPath");
                     textBox1.Text = getStringFromConfigXML("/Config/LocalSongPath");
-                    Form2.addLineToDebugLog("Opened Config File");
                 } catch {
-                    MessageBox.Show("A Config file is loaded but isn't Complete, please check the Official Github page for an example (github.com/chrisderwahre/JSRF_Song_Mod_Tool) or create a new one.", "Config File Error!");
+                    if (File.Exists(path + "/lang.xml")) {
+                        MessageBox.Show(getStringFromLangXML("/Config/IncompletedConfigFile"), "Config File Error");
+                    }
+                    else
+                    {
+                        MessageBox.Show("A Config file is loaded but isn't Complete, please check the Official Github page for an example (github.com/chrisderwahre/JSRF_Song_Mod_Tool) or create a new one.", "Config File Error!");
+                    }
+
                 }
-            } else { 
+            } else {
 
                 // Basic Config if not Config file has been found
                 XBoxPassword.Text = "xbox"; // Sets standart settings for the XBox Password textbox
                 XBoxPort.Text = "21"; // Sets standart settings for the XBox IP textbox
                 XBoxUser.Text = "xbox"; // Sets standart settings for the XBox User textbox
                 XBoxJSRFGamePath.Text = "/E/Games/Jet Set Radio Future/Media/Z_ADX/BGM"; // Sets standart settings for the XBox JSRF Path textbox
-                Form2.addLineToDebugLog("Used default settings");
             }
-            
-        } 
+
+            if (File.Exists(path + "/lang.xml"))
+            {
+                button1.Text = getStringFromLangXML("/Config/About"); // About button
+                button4.Text = getStringFromLangXML("/Config/Help"); // Help button
+                replaceBtn.Text = getStringFromLangXML("/Config/ReplaceThisSong"); // Replace Button
+                ftptoxbox_btn.Text = getStringFromLangXML("/Config/FTPtoXBOX"); // Ftp to Xbox button
+                whatarethesetfiles.Text = getStringFromLangXML("/Config/WhatAreTheSetFiles"); // What are the set files label
+                label4.Text = getStringFromLangXML("/Config/PickSong"); // Pick song label
+                tabPage1.Text = getStringFromLangXML("/Config/ToolPageName"); // Sets the Tab page names
+                tabPage2.Text = getStringFromLangXML("/Config/SettingsPageName"); // Sets the Tab page names
+                jsrflocalfiles.Text = getStringFromLangXML("/Config/JSRFLocalGroupBox"); // JSRF Local Files Group Box
+                groupBox2.Text = getStringFromLangXML("/Config/FTPGroupBox"); // FTP Settings Group box
+                label3.Text = getStringFromLangXML("/Config/LocalSongPath"); // JSRF Sound Path label
+
+                label5.Text = getStringFromLangXML("/Config/XBoxIP"); // Xbox ip label
+                label6.Text = getStringFromLangXML("/Config/XBoxPort"); // Xbox port label
+                label7.Text = getStringFromLangXML("/Config/XBoxUser"); // Xbox user label
+                label8.Text = getStringFromLangXML("/Config/XBoxPassword"); // Xbox password label
+
+                label9.Text = getStringFromLangXML("/Config/XBoxSongPath"); // Xbox jsrf game sound path label 
+                label10.Text = getStringFromLangXML("/Config/JSRFPathtoMedia"); // local jsrf game sound path label
+            }
+
+        }
 
         private void whatarethesetfiles_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (File.Exists("Set File Info.txt") || File.Exists("set file info.txt")) // Checks if a local copy of the text file exist
             {
                 Process.Start(path + "/Set file info.txt"); // Starts the file
-                Form2.addLineToDebugLog("Started: Set file info.txt");
             } else if (File.Exists("set_file_info.txt")) {
                 Process.Start(path + "/set_file_info.txt"); // Starts the file
-                Form2.addLineToDebugLog("Started: set_file_info.txt");
             } else {
                 Process.Start("https://pastebin.com/raw/spiE5xup"); // Opens a link in Browser for the set file information
-                Form2.addLineToDebugLog("Started: The Link to the Pastebin Page");
             }
         }
 
@@ -353,179 +476,246 @@ namespace JSRF_Song_Mod_Tool
 
         private void ftptoxbox_btn_Click(object sender, EventArgs e)
         {
-                if (XBoxIP.Text != "" && XBoxJSRFGamePath.Text != "" && XBoxPassword.Text != "" && XBoxPort.Text != "" && XBoxUser.Text != "" && textBox1.Text != "") // Checks if everythings existing
+            if (XBoxIP.Text != "" && XBoxJSRFGamePath.Text != "" && XBoxPassword.Text != "" && XBoxPort.Text != "" && XBoxUser.Text != "" && textBox1.Text != "") // Checks if everythings existing
+            {
+                string txt = listBox1.Text;
+                switch (txt) // Switchs the name and makes it easier and don't take much Lines
                 {
-                    string txt = listBox1.Text;
-                    switch (txt) // Switchs the name and makes it easier and don't take much Lines
-                    {
-                        case "Aisle 10": // If Aisle 10 is selected
-                            ftpSelectedFileToXbox("aisle10"); // use the ftpSelectedFileToXbox function with aisle10 (the adx file name)
-                            break; // breaks so nothing else will be made
-                        case "The Answer":
-                            ftpSelectedFileToXbox("answer");
-                            break;
-                        case "Baby-T":
-                            ftpSelectedFileToXbox("baby_t");
-                            break;
-                        case "Birthday Cake":
-                            ftpSelectedFileToXbox("birthday");
-                            break;
-                        case "Bokfresh":
-                            ftpSelectedFileToXbox("bokfresh");
-                            break;
-                        case "Latch Brothers Bounce":
-                            ftpSelectedFileToXbox("bounce");
-                            break;
-                        case "Fly Like a Butterfly":
-                            ftpSelectedFileToXbox("buttrfly");
-                            break;
-                        case "The Concept of Love":
-                            ftpSelectedFileToXbox("concept");
-                            break;
-                        case "Funky Dealer":
-                            ftpSelectedFileToXbox("dealer");
-                            break;
-                        case "Shape Da Future":
-                            ftpSelectedFileToXbox("future");
-                            break;
-                        case "Statement of Intent":
-                            ftpSelectedFileToXbox("intent");
-                            break;
-                        case "Koto Stomp":
-                            ftpSelectedFileToXbox("koto");
-                            break;
-                        case "Count Latchula":
-                            ftpSelectedFileToXbox("latchula");
-                            break;
-                        case "Let Mom Sleep (No Sleep Remix)":
-                            ftpSelectedFileToXbox("letmom");
-                            break;
-                        case "I Love Love You":
-                            ftpSelectedFileToXbox("lovelove");
-                            break;
-                        case "Rockin' da Mic (The Latch Bros Remix)":
-                            ftpSelectedFileToXbox("mic");
-                            break;
-                        case "I'm Not a Model":
-                            ftpSelectedFileToXbox("model");
-                            break;
-                        case "Oldies But Happies":
-                            ftpSelectedFileToXbox("oldies");
-                            break;
-                        case "Me Likey the Poom Poom":
-                            ftpSelectedFileToXbox("poompoom");
-                            break;
-                        case "Rock it On (D.S. Mix)":
-                            ftpSelectedFileToXbox("rockiton");
-                            break;
-                        case "Humming the Bassline (D.S. Remix)":
-                            ftpSelectedFileToXbox("g_park");
-                            break;
-                        case "The Scrappy (The Latch Bros Remix)":
-                            ftpSelectedFileToXbox("scrappy");
-                            break;
-                        case "Sneakman (Toronto Mix)":
-                            ftpSelectedFileToXbox("sneakman");
-                            break;
-                        case "Ill Victory Beat":
-                            ftpSelectedFileToXbox("victory");
-                            break;
-                        case "What About The Future":
-                            ftpSelectedFileToXbox("whatabout");
-                            break;
-                        case "Teknopathetic":
-                            ftpSelectedFileToXbox("scrappy");
-                            break;
-                        case "Like It Like This Like That":
-                            ftpSelectedFileToXbox("likeit");
-                            break;
-                        case "Sweet Soul Brother (B.B. Rights Mix)":
-                            ftpSelectedFileToXbox("sweet");
-                            break;
-                        case "That's Enough (B.B. Rights Mix)":
-                            ftpSelectedFileToXbox("thats");
-                            break;
-                        case "Grace And Glory":
-                            ftpSelectedFileToXbox("grace");
-                            break;
-                        case "Failed (Over)":
-                            ftpSelectedFileToXbox("g_over");
-                            break;
-                        case "Cleared":
-                            ftpSelectedFileToXbox("clear");
-                            break;
-                        case "Title Song(Concept of Love":
-                            ftpSelectedFileToXbox("title");
-                            break;
-                        case "DJ Demo(Ill Victory Beat)":
-                            ftpSelectedFileToXbox("dj_demo1");
-                            break;
-                        case "Set 1a":
-                            ftpSelectedFileToXbox("s_set_01a");
-                            break;
-                        case "Set 1b":
-                            ftpSelectedFileToXbox("s_set_01b");
-                            break;
-                        case "Set 2a":
-                            ftpSelectedFileToXbox("s_set_02a");
-                            break;
-                        case "Set 2b":
-                            ftpSelectedFileToXbox("s_set_02b");
-                            break;
-                        case "Set 3a":
-                            ftpSelectedFileToXbox("s_set_03a");
-                            break;
-                        case "Set 3b":
-                            ftpSelectedFileToXbox("s_set_03b");
-                            break;
-                        case "Set 4":
-                            ftpSelectedFileToXbox("set_04");
-                            break;
-                        case "Set 5a":
-                            ftpSelectedFileToXbox("s_set_05a");
-                            break;
-                        case "Set 5b":
-                            ftpSelectedFileToXbox("s_set_05b");
-                            break;
-                        case "Set 6":
-                            ftpSelectedFileToXbox("set_06");
-                            break;
-                        case "Set 7a":
-                            ftpSelectedFileToXbox("s_set_07a");
-                            break;
-                        case "Set 7b":
-                            ftpSelectedFileToXbox("s_set_07b");
-                            break;
-                        case "Set 8a":
-                            ftpSelectedFileToXbox("s_set_08a");
-                            break;
-                        case "Set 8b":
-                            ftpSelectedFileToXbox("s_set_08b");
-                            break;
-                        case "Set 9a":
-                            ftpSelectedFileToXbox("s_set_09a");
-                            break;
-                        case "Set 9b":
-                            ftpSelectedFileToXbox("s_set_09b");
-                            break;
-                        case "Ending (Sweet Sould Brother (Toronto Remix))":
-                            ftpSelectedFileToXbox("ending");
-                            break;
-                        case "Ending l (Playing various tracks(Ending Screen))":
-                            ftpSelectedFileToXbox("ending_l");
-                            break;
-                        case "Ending s (Playing various tracks(Ending Screen))":
-                            ftpSelectedFileToXbox("ending_s");
-                            break;
+                    case "Aisle 10": // If Aisle 10 is selected
+                        ftpSelectedFileToXbox("aisle10"); // use the ftpSelectedFileToXbox function with aisle10 (the adx file name)
+                        break; // breaks so nothing else will be made
+                    case "The Answer":
+                        ftpSelectedFileToXbox("answer");
+                        break;
+                    case "Baby-T":
+                        ftpSelectedFileToXbox("baby_t");
+                        break;
+                    case "Birthday Cake":
+                        ftpSelectedFileToXbox("birthday");
+                        break;
+                    case "Bokfresh":
+                        ftpSelectedFileToXbox("bokfresh");
+                        break;
+                    case "Latch Brothers Bounce":
+                        ftpSelectedFileToXbox("bounce");
+                        break;
+                    case "Fly Like a Butterfly":
+                        ftpSelectedFileToXbox("buttrfly");
+                        break;
+                    case "The Concept of Love":
+                        ftpSelectedFileToXbox("concept");
+                        break;
+                    case "Funky Dealer":
+                        ftpSelectedFileToXbox("dealer");
+                        break;
+                    case "Shape Da Future":
+                        ftpSelectedFileToXbox("future");
+                        break;
+                    case "Statement of Intent":
+                        ftpSelectedFileToXbox("intent");
+                        break;
+                    case "Koto Stomp":
+                        ftpSelectedFileToXbox("koto");
+                        break;
+                    case "Count Latchula":
+                        ftpSelectedFileToXbox("latchula");
+                        break;
+                    case "Let Mom Sleep (No Sleep Remix)":
+                        ftpSelectedFileToXbox("letmom");
+                        break;
+                    case "I Love Love You":
+                        ftpSelectedFileToXbox("lovelove");
+                        break;
+                    case "Rockin' da Mic (The Latch Bros Remix)":
+                        ftpSelectedFileToXbox("mic");
+                        break;
+                    case "I'm Not a Model":
+                        ftpSelectedFileToXbox("model");
+                        break;
+                    case "Oldies But Happies":
+                        ftpSelectedFileToXbox("oldies");
+                        break;
+                    case "Me Likey the Poom Poom":
+                        ftpSelectedFileToXbox("poompoom");
+                        break;
+                    case "Rock it On (D.S. Mix)":
+                        ftpSelectedFileToXbox("rockiton");
+                        break;
+                    case "Humming the Bassline (D.S. Remix)":
+                        ftpSelectedFileToXbox("g_park");
+                        break;
+                    case "The Scrappy (The Latch Bros Remix)":
+                        ftpSelectedFileToXbox("scrappy");
+                        break;
+                    case "Sneakman (Toronto Mix)":
+                        ftpSelectedFileToXbox("sneakman");
+                        break;
+                    case "Ill Victory Beat":
+                        ftpSelectedFileToXbox("victory");
+                        break;
+                    case "What About The Future":
+                        ftpSelectedFileToXbox("whatabout");
+                        break;
+                    case "Teknopathetic":
+                        ftpSelectedFileToXbox("scrappy");
+                        break;
+                    case "Like It Like This Like That":
+                        ftpSelectedFileToXbox("likeit");
+                        break;
+                    case "Sweet Soul Brother (B.B. Rights Mix)":
+                        ftpSelectedFileToXbox("sweet");
+                        break;
+                    case "That's Enough (B.B. Rights Mix)":
+                        ftpSelectedFileToXbox("thats");
+                        break;
+                    case "Grace And Glory":
+                        ftpSelectedFileToXbox("grace");
+                        break;
+                    case "Failed (Over)":
+                        ftpSelectedFileToXbox("g_over");
+                        break;
+                    case "Cleared":
+                        ftpSelectedFileToXbox("clear");
+                        break;
+                    case "Title Song(Concept of Love":
+                        ftpSelectedFileToXbox("title");
+                        break;
+                    case "DJ Demo(Ill Victory Beat)":
+                        ftpSelectedFileToXbox("dj_demo1");
+                        break;
+                    case "Set 1a":
+                        ftpSelectedFileToXbox("s_set_01a");
+                        break;
+                    case "Set 1b":
+                        ftpSelectedFileToXbox("s_set_01b");
+                        break;
+                    case "Set 2a":
+                        ftpSelectedFileToXbox("s_set_02a");
+                        break;
+                    case "Set 2b":
+                        ftpSelectedFileToXbox("s_set_02b");
+                        break;
+                    case "Set 3a":
+                        ftpSelectedFileToXbox("s_set_03a");
+                        break;
+                    case "Set 3b":
+                        ftpSelectedFileToXbox("s_set_03b");
+                        break;
+                    case "Set 4":
+                        ftpSelectedFileToXbox("set_04");
+                        break;
+                    case "Set 5a":
+                        ftpSelectedFileToXbox("s_set_05a");
+                        break;
+                    case "Set 5b":
+                        ftpSelectedFileToXbox("s_set_05b");
+                        break;
+                    case "Set 6":
+                        ftpSelectedFileToXbox("set_06");
+                        break;
+                    case "Set 7a":
+                        ftpSelectedFileToXbox("s_set_07a");
+                        break;
+                    case "Set 7b":
+                        ftpSelectedFileToXbox("s_set_07b");
+                        break;
+                    case "Set 8a":
+                        ftpSelectedFileToXbox("s_set_08a");
+                        break;
+                    case "Set 8b":
+                        ftpSelectedFileToXbox("s_set_08b");
+                        break;
+                    case "Set 9a":
+                        ftpSelectedFileToXbox("s_set_09a");
+                        break;
+                    case "Set 9b":
+                        ftpSelectedFileToXbox("s_set_09b");
+                        break;
+                    case "Ending (Sweet Sould Brother (Toronto Remix))":
+                        ftpSelectedFileToXbox("ending");
+                        break;
+                    case "Ending l (Playing various tracks(Ending Screen))":
+                        ftpSelectedFileToXbox("ending_l");
+                        break;
+                    case "Ending s (Playing various tracks(Ending Screen))":
+                        ftpSelectedFileToXbox("ending_s");
+                        break;
                         // Ending (Sweet Sould Brother (Toronto Remix))
                         //Ending l (Playing various tracks(Ending Screen))
                         //Ending s (Playing various tracks(Ending Screen))
                 }
-                } else {
+            } else {
+                if (File.Exists(path + "/lang.xml"))
+                {
+                    MessageBox.Show(getStringFromLangXML("/Config/NoFTPSettingsOrNoSong"), "Error");
+                }
+                else
+                {
                     MessageBox.Show("XBox FTP Settings NOT correct and/or no Song Selected", "Error"); // Error reporting.
-                JSRF_Song_Mod_Tool.Form2.addLineToDebugLog("Given out error: XBox FTP Settings NOT correct and/or no Song Selected");
                 }
             }
-        
-    }
+        }
+
+        public static Boolean checkUpdate()
+        {
+            string versionlink = "https://pastebin.com/raw/7XjGSUGf";
+
+            WebClient client = new WebClient();
+            Stream stream = client.OpenRead(versionlink);
+            StreamReader reader = new StreamReader(stream);
+            String content = reader.ReadToEnd();
+
+            Version a = new Version(content); // the version that is on the server
+            Version b = new Version(stVersion); // the local version
+
+            if (content != "")
+            {
+                if (a > b)
+                {
+                    return true;
+                }
+
+                if (b > a)
+                {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+            return false;
+        }
+
+        public static void doUpdate()
+        {
+            if (checkUpdate() == true)
+            {   
+                if (File.Exists("lang.xml"))
+                {
+                    DialogResult result = MessageBox.Show(getStringFromLangFile("/Config/Update"), "JSRF Song Mod Tool", MessageBoxButtons.YesNo);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        Process.Start("https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/releases/");
+                    }
+                }
+                else
+                {
+                    DialogResult result = MessageBox.Show("Update Available do you want to download it now?", "JSRF Song Mod Tool", MessageBoxButtons.YesNo);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        Process.Start("https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/releases/");
+                    }
+                }
+            }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (checkUpdate() == true)
+            {
+                doUpdate();
+            }
+        }
+    }   
 }
