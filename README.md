@@ -20,6 +20,8 @@ View the [wiki](https://github.com/chrisderwahre/JSRF_Song_Mod_Tool/wiki) to lea
 
 FtpClient Class: https://gist.github.com/eternnoir/9777420 
 
+Naudio: https://github.com/naudio/NAudio (licensed under Microsoft Public License)
+
 Thanks to contributing to:
  - neodos (Helped me with that ftp stuff)
  - BURRR (Helped me with the set files)
