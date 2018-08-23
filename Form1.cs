@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
-using NAudio.Wave;
+//using NAudio.Wave;
 using System.Net;
 
 namespace JSRF_Song_Mod_Tool
@@ -83,6 +83,7 @@ namespace JSRF_Song_Mod_Tool
             {
                 string path = Directory.GetCurrentDirectory(); // Gets the current direcory
 
+                /*
                 if (".mp3".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase)) // DOESNT WORK YET !!!
                 {
                     File.Delete(textBox1.Text + "/" + songName + ".adx"); // Deletes adx
@@ -113,7 +114,7 @@ namespace JSRF_Song_Mod_Tool
                         MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!"); // Output
                     }
                 }
-
+                */
                 if (".wav".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase)) // Checks if the selected file is a wav file
                 {
                     // the path to the wav2adx file
