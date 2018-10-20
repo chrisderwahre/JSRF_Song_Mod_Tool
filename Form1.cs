@@ -77,31 +77,23 @@ namespace JSRF_Song_Mod_Tool
 
 
             OpenFileDialog ofd = new OpenFileDialog(); // Creates a new OpenFileDialog
-            ofd.Filter = "Supported Sound Files|*.wav;*.adx"; // Sets a filter for the files to selected
+            ofd.Filter = "Supported Sound Files | *.wav; *.adx; *.mp3"; // Sets a filter for the files to selected
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 string path = Directory.GetCurrentDirectory(); // Gets the current direcory
 
-                /*
-                if (".mp3".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase)) // DOESNT WORK YET !!!
+                
+                if (".mp3".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase))
                 {
                     File.Delete(textBox1.Text + "/" + songName + ".adx"); // Deletes adx
-
-                    using (Mp3FileReader mp3 = new Mp3FileReader(ofd.FileName)) // Creates a new Mp3 file reader with NAudio !!
-                    {
-                        using (WaveStream pcm = WaveFormatConversionStream.CreatePcmStream(mp3)) // Creates a new Wave (Format COnsersion) Stream with NAudio!
-                        {
-                            WaveFileWriter.CreateWaveFile("convert/tmp.wav", pcm); // Creates the new wav file with NAudio
-                        }
-                    }
 
                     ProcessStartInfo startInfo = new ProcessStartInfo(); // Other shit
                     startInfo.CreateNoWindow = false; // Other shit
                     startInfo.UseShellExecute = false; // Other shit
-                    startInfo.FileName = path + "/convert/WAV2ADX.EXE";  // Filename for the .exe file
+                    startInfo.FileName = path + "/convert/ffmpeg.exe";  // Filename for the .exe file
                     startInfo.WindowStyle = ProcessWindowStyle.Hidden; // Not showning the cmd 
-                    startInfo.Arguments = '"' + path + "/convert/tmp.wav" + '"' + " " + '"' + textBox1.Text + @"\" + songName + ".adx" + '"'; // Argument for converting Wav files to adx!
+                    startInfo.Arguments = $"-i {'"'}{ofd.FileName}{'"'} {'"'}{textBox1.Text}/{songName}.adx{'"'}"; // Argument for converting Wav files to adx!
 
                     Process.Start(startInfo); // Starts the process with the settings from above
 
@@ -111,23 +103,20 @@ namespace JSRF_Song_Mod_Tool
                     }
                     else
                     {
-                        MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!"); // Output
+                        MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "JSRF Song Mod Tool"); // Output
                     }
                 }
-                */
+                
                 if (".wav".Equals(Path.GetExtension(ofd.FileName), StringComparison.OrdinalIgnoreCase)) // Checks if the selected file is a wav file
                 {
-                    // the path to the wav2adx file
-
-                    File.Delete(textBox1.Text + "/" + songName + ".adx"); // Deleting File
+                    File.Delete(textBox1.Text + "/" + songName + ".adx"); // Deletes adx
 
                     ProcessStartInfo startInfo = new ProcessStartInfo(); // Other shit
                     startInfo.CreateNoWindow = false; // Other shit
                     startInfo.UseShellExecute = false; // Other shit
-                    startInfo.FileName = path + "/convert/WAV2ADX.EXE";  // Filename for the .exe file
+                    startInfo.FileName = path + "/convert/ffmpeg.exe";  // Filename for the .exe file
                     startInfo.WindowStyle = ProcessWindowStyle.Hidden; // Not showning the cmd 
-                    startInfo.Arguments = '"' + ofd.FileName + '"' + " " + '"' + textBox1.Text + @"\" + songName + ".adx" + '"'; // Argument for converting Wav files to adx!
-
+                    startInfo.Arguments = $"-i {'"'}{ofd.FileName}{'"'} {'"'}{textBox1.Text}/{songName}.adx{'"'}"; // Argument for converting Wav files to adx!
 
                     Process.Start(startInfo); // Starts the process with the settings from above
 
@@ -152,7 +141,7 @@ namespace JSRF_Song_Mod_Tool
                     }
                     else
                     {
-                        MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "Done Replacing!"); // Output
+                        MessageBox.Show("Succesfully replaced " + listBox1.Text + " with " + ofd.FileName, "JSRF Song Mod Tool"); // Output
                     }
                 }
             }
@@ -180,11 +169,11 @@ namespace JSRF_Song_Mod_Tool
         {
             if (File.Exists(path + "/lang.xml"))
             {
-                MessageBox.Show(getStringFromLangXML("/Config/HelpButton").ToString().Replace("\n", "\n"), "Help");
+                MessageBox.Show(getStringFromLangXML("/Config/HelpButton").ToString().Replace("\n", "\n"), "JSRF Song Mod Tool");
             }
             else
             {
-                MessageBox.Show("How to use:\n1. Select Your JSRF Sound Folder (Media/Z_ADX/BGM)\n2. Pick the Song to Replace\n3.Click the Button and Select the audio file of the new File\n4.Configure the FTP Settings! \n5.Click the FTP to XBOX Button to ftp the selected to the XBox!", "Help"); // Tutorial Button
+                MessageBox.Show("How to use:\n1. Select Your JSRF Sound Folder (Media/Z_ADX/BGM)\n2. Pick the Song to Replace\n3.Click the Button and Select the audio file of the new File\n4.Configure the FTP Settings! \n5.Click the FTP to XBOX Button to ftp the selected to the XBox!", "JSRF Song Mod Tool"); // Tutorial Button
             }
         }
 
@@ -194,22 +183,22 @@ namespace JSRF_Song_Mod_Tool
             {
                 if (File.Exists(path + "/lang.xml"))
                 {
-                    MessageBox.Show(getStringFromLangXML("/Config/NoSongSelected"), "No Song Selected");
+                    MessageBox.Show(getStringFromLangXML("/Config/NoSongSelected"), "JSRF Song Mod Tool");
                 }
                 else
                 {
-                    MessageBox.Show("No Song is Selected please Select a song to Continue", "No Song Selected"); // Outpot
+                    MessageBox.Show("No Song is Selected please Select a song to Continue", "JSRF Song Mod Tool"); // Outpot
                 }
             }
             if (textBox1.Text == "") // Checks if the Game files are selected
             {
                 if (File.Exists(path + "/lang.xml"))
                 {
-                    MessageBox.Show(getStringFromLangXML("/Config/NoSongMediaFolder"), "No Song Media Files");
+                    MessageBox.Show(getStringFromLangXML("/Config/NoSongMediaFolder"), "JSRF Song Mod Tool");
                 }
                 else
                 {
-                    MessageBox.Show("No Song Media Files Selected!", "No Sound Files!"); // Output
+                    MessageBox.Show("No Song Media Files Selected!", "JSRF Song Mod Tool"); // Output
                 }
             }
 
